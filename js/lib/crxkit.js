@@ -4,90 +4,156 @@
  * jshint strict: true
  */
 
-import sugar from 'sugar';
+(function() {
+  // Empty function as callback
+  function noop() {}
 
-let options = {};
-let name = 'crxkit';
-
-function noop() {}
-
-function registerMessageDispatcher(dispatcher) {
-  chrome.runtime.onMessage.addListener(
-    function(message, sender, sendResponse) {
-      const handler = dispatcher[message.type] || noop;
-      handler(message, sender, sendResponse);
-
-      return true;
+  class OptionsWatcher {
+    constructor(callback) {
+      this.crxkit = callback;
+      this.start();
+      this.listeners = [];
     }
-  );
-}
 
-function talkToPage(tabId, message, callback) {
-  if (tabId) {
-    chrome.tabs.sendMessage(tabId, message, callback);
-  } else {
-    chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-      talkToPage(tabs[0].id, message, callback);
-    });
+    start() {
+      this.listen();
+      this.fetch();
+    }
+
+    fetch() {
+      chrome.storage.local.get('defaultOptions', localData => {
+        let options = Object.assign({}, localData['defaultOptions']);
+        chrome.storage.sync.get('options', remoteData => {
+          options = Object.assign(options, remoteData['options']);
+          this.updateOptions(options);
+        });
+      });
+    }
+
+    listen() {
+      chrome.storage.onChanged.addListener((changes, areaName) => {
+        if (areaName == 'local' && 'defaultOptions' in changes) {
+          this.defaultOptionsChanged(this.changes['defaultOptions'].newValue);
+        } else if (areaName == 'sync' && 'options' in changes) {
+          this.customOptionsChanged(this.changes['options'].newValue);
+        }
+      });
+    }
+
+    addListener(callback) {
+      this.listeners.push(callback);
+    }
+
+    broadcastOptions(options) {
+      this.listeners.forEach(listener => {
+        try {
+          listener(options);  
+        } catch(e) {
+          this.crxkit.log(`Failed to call options listener for reason: ${e}`);
+        }
+      });
+    }
+
+    updateOptions(options) {
+      this.crxkit.setOptions(options);
+      this.broadcastOptions(options);
+    }
+
+    defaultOptionsChanged(options) {
+      this.crxkit.log('Default options changed:', options);
+      updateOptions(options);
+    }
+
+    customOptionsChanged(options) {
+      this.crxkit.log('Custom options changed:', options);
+      updateOptions(options);
+    }
   }
-}
 
-function openExtensionPage(filename) {
-  var optionsUrl = chrome.extension.getURL(filename);
-
-  chrome.tabs.query({}, function(tabs) {
-    var optionTab = tabs.find({ url: optionsUrl });
-
-    if (optionTab) {
-      chrome.tabs.reload(optionTab.id);
-      chrome.tabs.update(optionTab.id, { highlighted: true });
-    } else {
-      chrome.tabs.create({ url: optionsUrl });
+  class ChromeExtension {
+    constructor() {
+      this.manifest = chrome.runtime.getManifest();
+      this.options = {};
+      this.isReady = false;
+      this.optionsWatcher = new OptionsWatcher(this);
+      this.readyListeners = [];
     }
-  });
-}
 
-/*
- * 从 storage 中读取配置，如果没有配置，则初始化为默认值
- *
- * @params {function} callback - Callback after options loaded.
- */
-function initOptions(callback) {
-  chrome.storage.sync.get(null, function(data) {
-    Object.merge(options, data);
-    
-    chrome.storage.sync.set(options);
+    onReady(callback) {
+      this.readyListeners.push(callback);
 
-    chrome.storage.onChanged.addListener(function(changes) {
-      for (var name in changes) {
-        var change = changes[name];
-        options[name] = change.newValue;
+      if (isReady) {
+        callback(this.options);
       }
-    });
-
-    if (Object.isFunction(callback)) {
-      callback();
     }
-  });
-}
 
-function log() {
-  var message = Array.prototype.slice.call(arguments, 0);
-  var pefix = '[{1}]'.assign(name);
-  console.log.apply(console, [pefix].concat(message));
-}
+    setDefaultOptions(options) {
+      chrome.storage.local.set({ defaultOptions: options });
+    }
 
-function setup(settings) {
-  Object.merge(options, settings.options);
-  name = settings.name;
-}
+    setOptions(options) {
+      this.log('Update options:', options);
+      this.options = options;
+    }
 
-module.exports = {
-  initOptions: initOptions,
-  registerMessageDispatcher: registerMessageDispatcher,
-  openExtensionPage: openExtensionPage,
-  talkToPage: talkToPage,
-  options: options,
-  setup: setup,
-  log: log,
-};
+    addOptionsListener(callback) {
+      this.optionsWatcher.addListener(callback);
+    }
+
+    get name() {
+      return this.manifest.name;
+    }
+
+    get shortName() {
+      return this.manifest.short_name;
+    }
+
+    get version() {
+      return this.manifest.version;
+    }
+
+    log() {
+      let prefix = `[${this.shortName || this.name || 'crxkit'}]`;
+      var message = Array.prototype.slice.call(arguments, 0);
+      console.log.apply(console, [prefix].concat(message));
+    }
+
+    registerMessageDispatcher(dispatcher) {
+      chrome.runtime.onMessage.addListener(
+        function(message, sender, sendResponse) {
+          const handler = dispatcher[message.type] || noop;
+          handler(message, sender, sendResponse);
+
+          return true;
+        }
+      );
+    }
+
+    talkToPage(tabId, message, callback) {
+      if (tabId) {
+        chrome.tabs.sendMessage(tabId, message, callback);
+      } else {
+        chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+          talkToPage(tabs[0].id, message, callback);
+        });
+      }
+    }
+
+    openExtensionPage(filename) {
+      var optionsUrl = chrome.extension.getURL(filename);
+
+      chrome.tabs.query({}, function(tabs) {
+        var optionTab = tabs.find({ url: optionsUrl });
+
+        if (optionTab) {
+          chrome.tabs.reload(optionTab.id);
+          chrome.tabs.update(optionTab.id, { highlighted: true });
+        } else {
+          chrome.tabs.create({ url: optionsUrl });
+        }
+      });
+    }
+  }
+
+  window.crxkit = new ChromeExtension();
+})();

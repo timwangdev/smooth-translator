@@ -12,6 +12,7 @@
 
   "background": {
     "scripts": [
+      "js/lib/crxkit.js",
       "js/event.js"
     ],
     "persistent": true

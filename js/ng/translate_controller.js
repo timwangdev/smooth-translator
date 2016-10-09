@@ -1,9 +1,7 @@
-import sugar from 'sugar';
-import app from '../../config/application';
-import { renderTranslation } from '../../lib/utils';
+// import app from '../../config/application';
+// import { renderTranslation } from '../../lib/utils';
 
-angular
-  .module('TransitApp')
+transitApp
   .controller('TranslateCtrl', function($scope, $timeout) {
     $scope.source = '';
     $scope.output = '';

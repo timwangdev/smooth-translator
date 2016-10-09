@@ -1,4 +1,4 @@
-export function renderTranslation(query, result) {
+function renderTranslation(query, result) {
   let phonetic = '';
   let translation = '未找到释义';
   let className = 'transit-warning';
@@ -47,7 +47,7 @@ function getPosition(evt, selection) {
   }
 }
 
-export function getSelection(evt) {
+function getSelection(evt) {
   const selection = window.getSelection();
   const text = selection.toString().trim();
 
@@ -58,14 +58,14 @@ export function getSelection(evt) {
   }
 }
 
-export function clearSelection() {
+function clearSelection() {
   const selection = window.getSelection();
   if (selection) {
     selection.empty();
   }
 }
 
-export function sanitizeHTML(html) {
+function sanitizeHTML(html) {
   var match = html.match(/<body[\s\S]*<\/body>/img);
   return match[0].replace(/<script([\s\S]*?)<\/script>/img, '')
                  .replace(/<style([\s\S]*?)<\/style>/img, '')
@@ -73,6 +73,21 @@ export function sanitizeHTML(html) {
                  .replace(/<video([\s\S]*?)>/img, '');
 }
 
-export function stopPropagation(event) {
+function stopPropagation(event) {
   event.stopPropagation();
 }
+
+// app.showUpdateNotes = function() {
+//   chrome.notifications.create("update_notes", {
+//       type: "list",
+//       title: "TransIt V1.6 更新记录",
+//       message: "",
+//       iconUrl: "img/icon48.png",
+//       items: [
+//         {
+//           title: '',
+//           message: '支持必应翻译'
+//         }
+//       ]
+//   }, function () {});
+// };

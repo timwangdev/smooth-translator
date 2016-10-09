@@ -4,9 +4,6 @@
  * jshint strict: true
  */
 
-import translators from './translators';
-import app from './config/application';
-
 // Key name to store current text in local storage
 const CURRENT_TEXT_KEY = 'transit_current_text';
 
@@ -49,18 +46,30 @@ function linkInspectHandler(message, sender, sendResponse) {
   }
 }
 
-app.registerMessageDispatcher({
-  translate: translateHanlder,
-  selection: selectionHandler,
-  currentText: currentTextHandler,
-  linkInspect: linkInspectHandler
-});
+function setupExtension() {
+  crxkit.setDefaultOptions({
+    notifyTimeout: 5,     // 页面划词结果显示时间
+    pageInspect: true,    // 是否启用页面划词
+    linkInspect: true,    // 是否启用链接划词
+    pushItem: false,      // 是否推送单词到服务端,
+    notifyMode: 'margin', // 结果默认显示在右上角
+    translator: 'youdao', // 默认的翻译服务
+  });
 
-app.initOptions();
+  crxkit.registerMessageDispatcher({
+    translate: translateHanlder,
+    selection: selectionHandler,
+    currentText: currentTextHandler,
+    linkInspect: linkInspectHandler
+  });
+}
+
+function showChangeLog() {
+  crxkit.log('This is the change log');
+}
 
 // Listen to extension update and show update notes
 chrome.runtime.onInstalled.addListener(function(details) {
-  if (details.reason == 'update') {
-    app.showUpdateNotes();
-  }
+  setupExtension();
+  showChangeLog();
 });

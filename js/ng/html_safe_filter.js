@@ -1,7 +1,6 @@
-import angular from 'angular';
+// import angular from 'angular';
 
-angular
-  .module('TransitApp')
+transitApp
   .filter('html_safe', function($sce) {
     return $sce.trustAsHtml;
   });
