@@ -13,6 +13,9 @@
   "background": {
     "scripts": [
       "js/lib/crxkit.js",
+      "js/translators/youdao_translator.js",
+      "js/translators/baidu_translator.js",
+      "js/translators/bing_translator.js",
       "js/event.js"
     ],
     "persistent": true

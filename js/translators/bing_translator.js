@@ -1,15 +1,11 @@
 /**
  * Bing Translator
  */
-import sugar from 'sugar';
-import $ from 'jquery';
-import { sanitizeHTML } from '../lib/utils';
-
 const DICT_URL = 'http://cn.bing.com/dict/search';
 const TRANSLATE_URL = 'http://cn.bing.com/translator/api/Translate/TranslateArray?from=-&to=zh-CHS';
 const REFERER = 'http://cn.bing.com/dict/?mkt=zh-cn&setlang=zh';
 
-export default class BingTranslator {
+class BingTranslator {
   constructor() {
     this.name = 'bing';
   }

@@ -55,5 +55,3 @@ YoudaoTranslator.translate = function(text, callback) {
     request(text, callback);
   }
 };
-
-module.exports = YoudaoTranslator;

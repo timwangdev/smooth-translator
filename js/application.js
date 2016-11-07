@@ -1,3 +1,7 @@
+function isBlank(text) {
+  return /^\s*$/.test(text);
+}
+
 function renderTranslation(query, result) {
   let phonetic = '';
   let translation = '未找到释义';

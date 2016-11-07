@@ -20,11 +20,23 @@ function currentText(text) {
   }
 }
 
+function getTranslator(name) {
+  if (name == 'baidu') {
+    return BaiduTranslator;
+  } else if (name == 'youdao') {
+    return YoudaoTranslator;
+  } else if (name == 'bing') {
+    return new BingTranslator();
+  } else {
+    throw `Unknown translator '${name}'`;
+  }
+}
+
 // Translate text and send result back
 // 
 // TODO: Cache translated result to speed up querying.
 function translateHanlder(message, sender, sendResponse) {
-  const translator = translators[app.options.translator];
+  const translator = getTranslator(crxkit.options.translator);
   translator.translate(message.text, sendResponse);
 }
 
@@ -38,7 +50,7 @@ function currentTextHandler(message, sender, sendResponse) {
 }
 
 function linkInspectHandler(message, sender, sendResponse) {
-  app.log(message);
+  crxkit.log(message);
   if (message.enabled) {
     chrome.browserAction.setIcon({ path: 'img/icon48-link.png' });
   } else {

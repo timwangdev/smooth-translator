@@ -5,9 +5,6 @@
  * 
  * jshint strict:true
  */
-var sugar = require('sugar');
-var $ = require('jquery');
-var utils = require('../lib/utils');
 
 // TODO: Auth detect word
 var WORD_URL = 'http://dict.baidu.com/s?wd=';
@@ -94,5 +91,3 @@ BaiduTranslator.translate = function(text, callback) {
     requestPhrase(text, callback);
   }
 };
-
-module.exports = BaiduTranslator;

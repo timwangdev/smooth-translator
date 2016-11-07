@@ -13,14 +13,15 @@ transitApp
     };
 
     $scope.translate = function(source) {
-      $scope.source = (source || '').trim();
+      console.log('Translate:', source);
+      $scope.source = source.trim();
 
       if ($scope.source) {
         $scope.output = '<div class="loading">正在查询...</div>';
 
         var message = { type: 'translate', text: $scope.source };
-        chrome.extension.sendMessage(message, function(response) {
-          app.log("Translate:", response);
+        chrome.extension.sendMessage(message, (response) => {
+          console.log("Translate:", response);
           $scope.$apply(function() {
             $scope.output = renderTranslation($scope.source, response);
           });
@@ -55,13 +56,13 @@ transitApp
     };
 
     $scope.handleChange = function($event) {
-      if ($scope.source.isBlank()) {
+      if (isBlank($scope.source)) {
         return $scope.resetSource();
       }
     };
 
     chrome.runtime.sendMessage({ type: 'currentText' }, (text) => {
-      $scope.translate(text);
+      if (text) $scope.translate(text);
 
       $timeout(function() {
         var source = document.querySelector('#source');
