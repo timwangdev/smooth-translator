@@ -6,7 +6,6 @@ transitApp
     $scope.source = '';
     $scope.output = '';
 
-
     $scope.resetSource = function() {
       $scope.source = '';
       $scope.output = '';

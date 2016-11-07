@@ -15,18 +15,17 @@ transitApp
       $scope.options.translator = translators[index % translators.length];
     };
 
-    // crxkit.initOptions(function() {
-    //   $scope.options = app.options;
-    //   app.log('Options Loaded:', app.options);
+    crxkit.onReady(function() {
+      $scope.options = crxkit.options;
 
-    //   function saveOptions() {
-    //     chrome.storage.sync.set($scope.options);
-    //   }
+      function saveOptions() {
+        crxkit.setOptions($scope.options);
+      }
 
-    //   $scope.$apply();
+      $scope.$apply();
 
-    //   for (var name in app.options) {
-    //     $scope.$watch("options." + name, saveOptions);
-    //   }
-    // });
+      for (var name in crxkit.options) {
+        $scope.$watch("options." + name, saveOptions);
+      }
+    });
   });

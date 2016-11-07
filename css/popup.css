@@ -33,11 +33,13 @@ body {
   padding: 2px 4px;
   font-weight: bold;
   box-sizing: border-box;
-
-  &:active, &:focus {
-    outline: -webkit-focus-ring-color auto 3px;
-  }
 }
+
+#source:active, #source:focus {
+  outline: -webkit-focus-ring-color auto 3px;
+}
+
+/* Translator Logos */
 
 .btn-translator {
   width: 29px;
@@ -46,37 +48,40 @@ body {
   background-size: 16px 16px;
   background-repeat: no-repeat;
   background-position: center center;
-
-  &.youdao {
-    background-size: 29px 16px;
-    background-image: url(../img/translators/youdao.png);
-  }
-
-  &.baidu {
-    background-image: url(../img/translators/baidu.png);
-  }
-
-  &.bing {
-    background-image: url(../img/translators/bing.png);
-  }
 }
+
+.btn-translator.youdao {
+  background-size: 29px 16px;
+  background-image: url(../img/translators/youdao.png);
+}
+
+.btn-translator.baidu {
+  background-image: url(../img/translators/baidu.png);
+}
+
+.btn-translator.bing {
+  background-image: url(../img/translators/bing.png);
+}
+
 
 footer {
   height: 16px;
   margin-top: 7px;
 }
 
+/* Inline checkbox */
+
 .checkbox-inline {
   display: inline-block;
   cursor: pointer;
+}
 
-  input {
-    display: none;
-  }
+.checkbox-inline input {
+  display: none;
+}
 
-  input:not(:checked) + .icon {
-    opacity: 0.3;
-  }
+.checkbox-inline input:not(:checked) + .icon {
+  opacity: 0.3;
 }
 
 .translator-logo {

@@ -9,10 +9,10 @@
   function noop() {}
 
   class OptionsWatcher {
-    constructor(callback) {
-      this.crxkit = callback;
-      this.start();
+    constructor(kitInstance) {
+      this.crxkit = kitInstance;
       this.listeners = [];
+      this.start();
     }
 
     start() {
@@ -26,6 +26,7 @@
         chrome.storage.sync.get('options', remoteData => {
           options = Object.assign(options, remoteData['options']);
           this.updateOptions(options);
+          this.crxkit.isReady = true;
         });
       });
     }
@@ -82,7 +83,8 @@
     onReady(callback) {
       this.readyListeners.push(callback);
 
-      if (isReady) {
+      console.log('---', this.isReady);
+      if (this.isReady) {
         callback(this.options);
       }
     }
