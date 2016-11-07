@@ -14,7 +14,7 @@ function renderTranslation(query, result) {
   }
 
   return `` +
-    `<div class="transit-result ${className}">` +
+    `<div class="${className}">` +
     `  <h6>${query}</h6>` +
     `  <code>${phonetic || ''}</code>` +
     `  <pre>${translation}</pre>` +

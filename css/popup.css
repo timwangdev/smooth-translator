@@ -61,28 +61,6 @@ body {
   }
 }
 
-.transit-result {
-  max-height: 200px;
-  margin-top: 7px;
-  padding: 3px 6px;
-  overflow-y: auto;
-  white-space: pre-line;
-
-  &.transit-success {
-    background: #efffef;
-    color: #2B3F29;
-  }
-
-  &.transit-warning {
-    background: #FFF8DC;
-    color: #888888;
-  }
-
-  h6 {
-    display: none;
-  }
-}
-
 footer {
   height: 16px;
   margin-top: 7px;

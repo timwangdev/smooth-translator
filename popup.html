@@ -17,7 +17,9 @@
               ng-keyup="handleChange($event)"
               msd-elastic></textarea>
 
-    <div id="result" ng-bind-html="output | html_safe"></div>
+    <div class="transit-result transit-result-light"
+         ng-bind-html="output | html_safe">
+    </div>
   </div>
 
   <footer ng-controller="OptionsCtrl">
