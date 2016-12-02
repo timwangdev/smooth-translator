@@ -4,6 +4,6 @@ import BingTranslator from './bing_translator';
 
 export default {
   baidu: BaiduTranslator,
-  youdao: YoudaoTranslator,
+  youdao: new YoudaoTranslator(),
   bing: new BingTranslator(),
 };
