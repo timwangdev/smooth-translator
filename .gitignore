@@ -3,7 +3,7 @@
 *.sublime-workspace
 /package
 /node_modules
-/src/bower_components
+/bower_components
 /build
 /dist
 /.sass-cache
