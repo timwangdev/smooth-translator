@@ -35,6 +35,7 @@ var Notify = function(text, options) {
   this.options = options;
 
   this.render();
+  this.bind();
   this.request();
 };
 
@@ -62,7 +63,6 @@ Notify.prototype.request = function() {
   chrome.extension.sendMessage(message, function(response) {
     var result = renderTranslation(self.text, response);
     self.$el.find('.transit-notify-content').html(result);
-    self.bind();
     self.hide();
   });
 };
