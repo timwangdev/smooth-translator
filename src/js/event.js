@@ -41,7 +41,6 @@ function currentTextHandler(message, sender, sendResponse) {
 }
 
 function linkInspectHandler(message, sender, sendResponse) {
-  app.log(message);
   if (message.enabled) {
     chrome.browserAction.setIcon({ path: 'img/icon48-link.png' });
   } else {
@@ -64,3 +63,10 @@ chrome.runtime.onInstalled.addListener(function(details) {
     app.showUpdateNotes();
   }
 });
+
+chrome.commands.onCommand.addListener(function(command) {
+  if (command == 'toggle-link-inspect') {
+    app.talkToPage(null, { type: 'toggleLink' });
+  }
+});
+

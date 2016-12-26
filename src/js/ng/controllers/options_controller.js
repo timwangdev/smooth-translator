@@ -16,6 +16,11 @@ angular
       $scope.options.translator = translators[index % translators.length];
     };
 
+    $scope.configureCommands = function() {
+      const url = 'chrome://extensions/configureCommands';
+      chrome.tabs.create({ url: url });
+    };
+
     app.initOptions(function() {
       $scope.options = app.options;
       app.log('Options Loaded:', app.options);
@@ -29,5 +34,11 @@ angular
       for (var name in app.options) {
         $scope.$watch("options." + name, saveOptions);
       }
+    });
+
+    chrome.commands.getAll(function(commands) {
+      let command = commands.find(c => c.name == 'toggle-link-inspect');
+      $scope.commands = { toggleLink: command };
+      $scope.$apply();
     });
   });

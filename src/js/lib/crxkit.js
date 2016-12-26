@@ -83,11 +83,11 @@ function setup(settings) {
 }
 
 module.exports = {
-  initOptions: initOptions,
-  registerMessageDispatcher: registerMessageDispatcher,
-  openExtensionPage: openExtensionPage,
-  talkToPage: talkToPage,
-  options: options,
-  setup: setup,
-  log: log,
+  initOptions,
+  registerMessageDispatcher,
+  openExtensionPage,
+  talkToPage,
+  options,
+  setup,
+  log,
 };

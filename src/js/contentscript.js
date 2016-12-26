@@ -18,10 +18,8 @@ function isLinkInspectKeymap(evt) {
   return evt.ctrlKey && evt.shiftKey && evt.which == 12;
 }
 
-function shortcutHandler(evt) {
-  if (app.options.linkInspect && isLinkInspectKeymap(evt)) {
-    toggleLinkInspectMode();
-  }
+function toggleLinkHandler(message, sender, sendResponse) {
+  toggleLinkInspectMode();
 }
 
 function toggleLinkInspectMode(flag) {
@@ -61,6 +59,9 @@ function selectionHandler(evt) {
 }
 
 app.initOptions(function(options) {
-  $(document).on('keypress', shortcutHandler);
   $(document).on('mouseup', selectionHandler);
+
+  app.registerMessageDispatcher({
+    toggleLink: toggleLinkHandler
+  });
 });

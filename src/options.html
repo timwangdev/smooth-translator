@@ -37,17 +37,17 @@
         </div>
 
         <div class="form-group">
-          <label class="control-label">启用链接划词</label>
+          <label class="control-label">链接划词模式</label>
           <div class="controls">
-            <label class="radio-inline"><input type="radio" name="linkInspect" ng-model="options.linkInspect" ng-value="true" />启用</label>
-            <label class="radio-inline"><input type="radio" name="linkInspect" ng-model="options.linkInspect" ng-value="false" /> 停用</label>
-
-            <div class="hint">
+            <p>
               使用快捷键
-              <code>Ctrl + Shift + L</code>
-              启用/禁用链接划词模式。
-              划词结束或者点击页面任意一处，将自动恢复为禁用状态。
-            </div>
+              <code class="command">{{ commands.toggleLink.shortcut || '未设置' }}</code>
+              打开/关闭链接划词模式，划词结束或者点击页面任意一处，将自动恢复为禁用状态。
+            </p>
+
+            <p>
+              <button ng-click="configureCommands()">更改快捷键</button>
+            </p>
           </div>
         </div>
 
