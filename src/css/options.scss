@@ -1,8 +1,12 @@
+@import "includes/grid";
+@import "includes/switch";
+
 body {
   background: #efefe9;
   margin: 0;
   padding: 0;
   color: #555;
+  font-size: 13px;
 }
 
 .board {
@@ -82,3 +86,4 @@ input[type=range] {
     }
   }
 }
+

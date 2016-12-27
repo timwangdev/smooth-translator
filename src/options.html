@@ -31,8 +31,34 @@
         <div class="form-group">
           <label class="control-label">启用页面划词</label>
           <div class="controls">
-            <label class="radio-inline"><input type="radio" name="pageInspect" ng-model="options.pageInspect" ng-value="true" />启用</label>
-            <label class="radio-inline"><input type="radio" name="pageInspect" ng-model="options.pageInspect" ng-value="false" /> 停用</label>
+            <table class="grid">
+              <thead>
+                <tr>
+                  <th>网站</th>
+                  <th width="100">&nbsp;</th>
+                  <th width="50">&nbsp;</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="(site, enabled) in options.pageInspects">
+                  <td>
+                    {{ site == '*' ? '默认' : site }}
+                  </td>
+                  <td width="100">
+                    <switch
+                      name="enabled"
+                      ng-model="options.pageInspects[site]"
+                      on="允许"
+                      off="禁止"
+                      class="green wide small">
+                    <switch>
+                  </td>
+                  <td width="50">
+                    <a href="###">移除</a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
 

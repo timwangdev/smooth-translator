@@ -1,8 +1,9 @@
 import app from '../../config/application';
 import angular from 'angular';
+import uiSwitch from 'angular-ui-switch';
 
 angular
-  .module('TransitApp')
+  .module('TransitApp', ['uiSwitch'])
   .controller('OptionsCtrl', function($scope) {
     $scope.openExtensionPage = function() {
       app.openExtensionPage('options.html');

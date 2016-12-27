@@ -15,10 +15,11 @@
   "dependencies": {
     "angular": "^1.4.1",
     "angular-elastic": "^2.3.5",
+    "angular-ui-switch": "^0.1.1",
+    "blueimp-md5": "^1.1.1",
     "jquery": "^2.1.4",
     "sugar": "^1.4.1",
-    "vinyl-source-stream": "^1.1.0",
-    "blueimp-md5": "^1.1.1"
+    "vinyl-source-stream": "^1.1.0"
   },
   "browserify": {
     "transform": [
