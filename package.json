@@ -1,36 +1,15 @@
 {
-  "name": "crx-transit",
+  "name": "focus-dict",
   "devDependencies": {
-    "babel-preset-es2015": "^6.9.0",
-    "babelify": "latest",
-    "grunt": "^0.4.5",
-    "grunt-browserify": "^5.0.0",
-    "grunt-contrib-compress": "^1.1.1",
-    "grunt-contrib-copy": "^1.0.0",
-    "grunt-contrib-jshint": "^1.0.0",
-    "grunt-contrib-sass": "^1.0.0",
-    "grunt-contrib-uglify": "^1.0.1",
-    "grunt-contrib-watch": "^1.0.0"
+    "babel-core": "^6.21.0",
+    "babel-loader": "^6.2.10",
+    "babel-preset-es2015": "^6.18.0",
+    "copy-webpack-plugin": "^4.0.1",
+    "css-loader": "^0.26.1",
+    "webpack": "^1.14.0",
+    "webpack-sass": "^2.2.1"
   },
-  "dependencies": {
-    "angular": "^1.4.1",
-    "angular-elastic": "^2.3.5",
-    "angular-ui-switch": "^0.1.1",
-    "blueimp-md5": "^1.1.1",
-    "jquery": "^2.1.4",
-    "sugar": "^1.4.1",
-    "vinyl-source-stream": "^1.1.0"
-  },
-  "browserify": {
-    "transform": [
-      [
-        "babelify",
-        {
-          "presets": [
-            "es2015"
-          ]
-        }
-      ]
-    ]
+  "scripts": {
+    "start": "./node_modules/.bin/webpack --watch"
   }
 }
