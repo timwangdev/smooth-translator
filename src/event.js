@@ -6,6 +6,9 @@
 
 import translators from './translators';
 import app from './config/application';
+import merge from 'deepmerge';
+import chromeStorage from 'chrome-storage-wrapper';
+import defaults from 'defaults';
 
 // Key name to store current text in local storage
 const CURRENT_TEXT_KEY = 'transit_current_text';
@@ -48,23 +51,30 @@ function linkInspectHandler(message, sender, sendResponse) {
   }
 }
 
-app.registerMessageDispatcher({
-  translate: translateHanlder,
-  selection: selectionHandler,
-  currentText: currentTextHandler,
-  linkInspect: linkInspectHandler
+// app.registerMessageDispatcher({
+//   translate: translateHanlder,
+//   selection: selectionHandler,
+//   currentText: currentTextHandler,
+//   linkInspect: linkInspectHandler
+// });
+
+// Register options defaults on extension install/reinstall
+chrome.runtime.onInstalled.addListener(details => {
+  chromeStorage.getAll()
+    .then(options => merge(defaults, options))
+    .then(options => chromeStorage.set(options));
 });
 
-app.initOptions();
-
 // Listen to extension update and show update notes
-chrome.runtime.onInstalled.addListener(function(details) {
+chrome.runtime.onInstalled.addListener(details => {
   if (details.reason == 'update') {
+    // FIXME: Use changelog page in new tab
     app.showUpdateNotes();
   }
 });
 
-chrome.commands.onCommand.addListener(function(command) {
+// Register command for quick link inspect switch
+chrome.commands.onCommand.addListener(command => {
   if (command == 'toggle-link-inspect') {
     app.talkToPage(null, { type: 'toggleLink' });
   }
