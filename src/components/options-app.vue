@@ -6,14 +6,9 @@
 
     <div class="board-content">
       <form class="form-horizontal" role="form">
-        <div class="form-group">
-          <label class="control-label">翻译服务</label>
-          <div class="controls">
-            <label class="radio-inline"><input type="radio" name="translator" ng-model="options.translator" value="youdao" /> 有道翻译</label>
-            <label class="radio-inline"><input type="radio" name="translator" ng-model="options.translator" value="baidu" /> 百度翻译</label>
-            <label class="radio-inline"><input type="radio" name="translator" ng-model="options.translator" value="bing" /> 必应翻译</label>
-          </div>
-        </div>
+        <radios-group label="翻译服务"
+          options="options"
+          optionName="translator" />
 
         <div class="form-group">
           <label class="control-label">启用页面划词</label>
@@ -63,6 +58,13 @@
 </template>
 
 <script>
+import RadiosGroup from './radios-group.vue';
+
+export default {
+  components: {
+    RadiosGroup,
+  },
+};
 </script>
 
 <style lang="sass">
