@@ -10,6 +10,7 @@ export default {
 
   // 划词翻译在各个网站上是否开启
   websites: {
-    '*': true
-  } 
+    '*': true,
+  },
 };
+

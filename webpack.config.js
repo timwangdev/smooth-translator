@@ -14,19 +14,9 @@ module.exports = {
   },
   module: {
     loaders: [
-      {
-        test: /\.scss$/,
-        loader: 'webpack-sass'
-      },
-      {
-        test: /\.vue$/,
-        loader: 'vue'
-      },
-      {
-        test: /\.js$/,
-        loader: 'babel-loader?presets[]=es2015',
-        exclude: /node_modules/
-      }
+      { test: /\.js$/, loader: 'babel!eslint', exclude: /node_modules/ },
+      { test: /\.vue$/, loader: 'vue!eslint' },
+      { test: /\.scss$/, loader: 'sass' }
     ]
   },
   plugins: [

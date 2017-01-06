@@ -10,7 +10,7 @@
           options="options"
           optionName="translator" />
 
-        <div class="form-group">
+        <!-- <div class="form-group">
           <label class="control-label">启用页面划词</label>
           <div class="controls">
             <label class="radio-inline"><input type="radio" name="pageInspect" ng-model="options.pageInspect" ng-value="true" />启用</label>
@@ -51,16 +51,27 @@
             <input type="range" min="3" max="10" step="1" ng-model="options.notifyTimeout" data-highlight="true" />
             <span class="label label-info">{{ options.notifyTimeout }} 秒</span>
           </div>
-        </div>
+        </div> -->
       </form>
     </div><!-- .board-content -->
   </div><!-- .board -->
 </template>
 
 <script>
+import chromeStorage from 'chrome-storage-wrapper';
+
+import defaults from '../defaults';
 import RadiosGroup from './radios-group.vue';
 
 export default {
+  data() {
+    return {
+      options: defaults,
+    };
+  },
+  created() {
+    chromeStorage.getAll().then(options => (this.options = options));
+  },
   components: {
     RadiosGroup,
   },
