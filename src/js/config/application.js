@@ -1,4 +1,8 @@
 import app from '../lib/crxkit';
+import chromeStorage from 'chrome-storage-wrapper';
+
+// Setups
+chromeStorage.defaultArea = 'sync';
 
 app.setup({
   name: 'transit',

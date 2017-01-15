@@ -3,9 +3,12 @@
     <label class="control-label">{{ label }}</label>
     <div class="controls">
       <label class="radio-inline"
-        v-for="(text, key) in radioOptions">
-        <input type="radio" v-model="option" :value="key" />
-        {{ text }}
+        v-for="item in radioOptions">
+        <input type="radio"
+          v-model="option"
+          :name="optionName"
+          :value="item.key" />
+        {{ item.text }}
       </label>
     </div>
   </div>

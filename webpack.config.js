@@ -16,7 +16,8 @@ module.exports = {
     loaders: [
       { test: /\.js$/, loader: 'babel!eslint', exclude: /node_modules/ },
       { test: /\.vue$/, loader: 'vue!eslint' },
-      { test: /\.scss$/, loader: 'sass' }
+      { test: /\.scss$/, loader: 'sass' },
+      { test: /\.png$/,    loader: "url-loader?limit=10000&minetype=image/png" }
     ]
   },
   plugins: [
@@ -25,5 +26,10 @@ module.exports = {
       { context: './src', from: 'manifest.json' },
       { context: './src/img', from: 'icon*.png' },
     ])
-  ]
+  ],
+  vue: {
+    loaders: {
+      scss: 'vue-style-loader!css-loader!sass-loader'
+    }
+  }
 };

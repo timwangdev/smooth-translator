@@ -1,55 +1,50 @@
-/*
- * TransIt Event
- * 
- * jshint strict: true
- */
-
-import translators from './translators';
-import app from './config/application';
+// import translators from './translators';
+// import app from './config/application';
 import merge from 'deepmerge';
 import chromeStorage from 'chrome-storage-wrapper';
-import defaults from 'defaults';
+
+import defaults from './defaults';
 
 // Key name to store current text in local storage
-const CURRENT_TEXT_KEY = 'transit_current_text';
+// const CURRENT_TEXT_KEY = 'transit_current_text';
 
 // Setter / Getter for current text
-// 
+//
 // If text if passed, update `current_text` in local storage,
 // otherwise, read from local storage.
-function currentText(text) {
-  if (text) {
-    localStorage.setItem(CURRENT_TEXT_KEY, text);
-    return text;
-  } else {
-    return localStorage.getItem(CURRENT_TEXT_KEY);
-  }
-}
+// function currentText(text) {
+//   if (text) {
+//     localStorage.setItem(CURRENT_TEXT_KEY, text);
+//     return text;
+//   } else {
+//     return localStorage.getItem(CURRENT_TEXT_KEY);
+//   }
+// }
 
 // Translate text and send result back
-// 
+//
 // TODO: Cache translated result to speed up querying.
-function translateHanlder(message, sender, sendResponse) {
-  const translator = translators[app.options.translator];
-  translator.translate(message.text, sendResponse);
-}
+// function translateHanlder(message, sender, sendResponse) {
+//   const translator = translators[app.options.translator];
+//   translator.translate(message.text, sendResponse);
+// }
 
 // Save current selection to localStorage
-function selectionHandler(message, sender, sendResponse) {
-  currentText(message.text);
-}
+// function selectionHandler(message, sender, sendResponse) {
+//   currentText(message.text);
+// }
 
-function currentTextHandler(message, sender, sendResponse) {
-  sendResponse(currentText());
-}
+// function currentTextHandler(message, sender, sendResponse) {
+//   sendResponse(currentText());
+// }
 
-function linkInspectHandler(message, sender, sendResponse) {
-  if (message.enabled) {
-    chrome.browserAction.setIcon({ path: 'img/icon48-link.png' });
-  } else {
-    chrome.browserAction.setIcon({ path: 'img/icon48.png' });
-  }
-}
+// function linkInspectHandler(message, sender, sendResponse) {
+//   if (message.enabled) {
+//     chrome.browserAction.setIcon({ path: 'img/icon48-link.png' });
+//   } else {
+//     chrome.browserAction.setIcon({ path: 'img/icon48.png' });
+//   }
+// }
 
 // app.registerMessageDispatcher({
 //   translate: translateHanlder,
@@ -59,24 +54,24 @@ function linkInspectHandler(message, sender, sendResponse) {
 // });
 
 // Register options defaults on extension install/reinstall
-chrome.runtime.onInstalled.addListener(details => {
+chrome.runtime.onInstalled.addListener(() => {
   chromeStorage.getAll()
     .then(options => merge(defaults, options))
     .then(options => chromeStorage.set(options));
 });
 
 // Listen to extension update and show update notes
-chrome.runtime.onInstalled.addListener(details => {
-  if (details.reason == 'update') {
-    // FIXME: Use changelog page in new tab
-    app.showUpdateNotes();
-  }
-});
+// TODO: open release note page in new tab
+// chrome.runtime.onInstalled.addListener(details => {
+//   if (details.reason == 'update') {
+//     // FIXME: Use changelog page in new tab
+//     app.showUpdateNotes();
+//   }
+// });
 
 // Register command for quick link inspect switch
-chrome.commands.onCommand.addListener(command => {
-  if (command == 'toggle-link-inspect') {
-    app.talkToPage(null, { type: 'toggleLink' });
-  }
-});
-
+// chrome.commands.onCommand.addListener(command => {
+//   if (command === 'toggle-link-inspect') {
+//     // app.talkToPage(null, { type: 'toggleLink' });
+//   }
+// });
