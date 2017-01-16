@@ -1,3 +1,4 @@
+var webpack = require('webpack');
 var CopyWebpackPlugin = require('copy-webpack-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 
@@ -21,6 +22,7 @@ module.exports = {
     ]
   },
   plugins: [
+    new webpack.OldWatchingPlugin(),
     new CopyWebpackPlugin([
       { context: './src', from: '*.html' },
       { context: './src', from: 'manifest.json' },
@@ -31,5 +33,8 @@ module.exports = {
     loaders: {
       scss: 'vue-style-loader!css-loader!sass-loader'
     }
+  },
+  eslint: {
+    failOnError: true
   }
 };

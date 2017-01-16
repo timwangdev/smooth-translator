@@ -9,12 +9,16 @@
     <div class="board-content">
       <form class="form-horizontal" role="form">
         <radios-group label="翻译服务"
-          options="options"
+          :options="options"
           optionName="translator" />
         <radios-group label="划词翻译结果显示位置"
-          options="options"
+          :options="options"
           optionName="notifyMode" />
-
+        <slider label="划词翻译结果显示时长"
+          :options="options"
+          min="3"
+          max="10"
+          optionName="notifyTimeout" />
         <!-- <div class="form-group">
           <label class="control-label">启用页面划词</label>
           <div class="controls">
@@ -36,15 +40,6 @@
               划词结束或者点击页面任意一处，将自动恢复为禁用状态。
             </div>
           </div>
-        </div>
-
-
-        <div class="form-group">
-          <label class="control-label">划词翻译结果显示时长</label>
-          <div class="controls" style="padding-top: 7px;">
-            <input type="range" min="3" max="10" step="1" ng-model="options.notifyTimeout" data-highlight="true" />
-            <span class="label label-info">{{ options.notifyTimeout }} 秒</span>
-          </div>
         </div> -->
       </form>
     </div><!-- .board-content -->
@@ -56,6 +51,7 @@ import chromeStorage from 'chrome-storage-wrapper';
 
 import defaults from '../defaults';
 import RadiosGroup from './radios-group.vue';
+import Slider from './slider.vue';
 
 export default {
   data() {
@@ -68,6 +64,7 @@ export default {
   },
   components: {
     RadiosGroup,
+    Slider,
   },
 };
 </script>
