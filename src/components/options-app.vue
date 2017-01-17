@@ -19,6 +19,9 @@
           min="3"
           max="10"
           optionName="notifyTimeout" />
+        <rule-list label="启用/禁用页面划词翻译"
+          :options="options"
+          optionName="siteRules" />
         <!-- <div class="form-group">
           <label class="control-label">启用页面划词</label>
           <div class="controls">
@@ -52,6 +55,7 @@ import chromeStorage from 'chrome-storage-wrapper';
 import defaults from '../defaults';
 import RadiosGroup from './radios-group.vue';
 import Slider from './slider.vue';
+import RuleList from './rule-list.vue';
 
 export default {
   data() {
@@ -65,6 +69,7 @@ export default {
   components: {
     RadiosGroup,
     Slider,
+    RuleList,
   },
 };
 </script>

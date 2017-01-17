@@ -9,8 +9,8 @@ export default {
   translator: 'youdao',
 
   // 划词翻译在各个网站上是否开启
-  websites: {
-    '*': true,
-  },
+  siteRules: [
+    { site: '*', enabled: true },
+    { site: 'baidu.com', enabled: false },
+  ],
 };
-
