@@ -2,8 +2,10 @@
   <div>
     <label class="radio-inline" v-for="option in options">
       <input type="radio"
-        v-model="value"
-        :value="option.key" />
+        :name="name"
+        :value="option.key"
+        :checked="option.key == value"
+        @change="checkOption" />
       {{ option.text }}
     </label>
   </div>
@@ -11,10 +13,10 @@
 
 <script>
 export default {
-  props: ['options', 'value'],
-  watch: {
-    value(newValue) {
-      this.$emit('change', newValue);
+  props: ['options', 'value', 'name'],
+  methods: {
+    checkOption(event) {
+      this.$emit('change', event.target.value);
     },
   },
 };

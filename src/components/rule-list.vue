@@ -21,8 +21,11 @@
 export default {
   props: ['rules'],
   watch: {
-    rules(newRules) {
-      this.$emit('change', newRules);
+    rules: {
+      handler(newRules) {
+        this.$emit('change', newRules);
+      },
+      deep: true,
     },
   },
 };

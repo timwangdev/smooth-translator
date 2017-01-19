@@ -3,9 +3,8 @@
     <input type="range"
       :min="min"
       :max="max"
-      step="1"
-      v-model="value"
-      data-highlight="true" />
+      :value="value"
+      @input="changeValue" />
     <span class="label label-info">{{ value }} 秒</span>
   </div>
 </template>
@@ -13,9 +12,9 @@
 <script>
 export default {
   props: ['min', 'max', 'value'],
-  watch: {
-    value(value) {
-      this.$emit('change', value);
+  methods: {
+    changeValue(event) {
+      this.$emit('change', event.target.value);
     },
   },
 };

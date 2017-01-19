@@ -7,10 +7,10 @@
     </div>
 
     <div class="board-content">
-      <pre>{{ options }}</pre>
       <form class="form-horizontal" role="form">
         <form-group label="翻译服务">
           <radios-group
+            name="translator"
             :value="options.translator"
             :options="translatorOptions"
             @change="updateOption('translator', $event)" />
@@ -18,6 +18,7 @@
 
         <form-group label="划词翻译结果显示位置">
           <radios-group
+            name="notifyMode"
             :value="options.notifyMode"
             :options="notifyModeOptions"
             @change="updateOption('notifyMode', $event)" />
@@ -90,6 +91,7 @@ export default {
   },
   methods: {
     updateOption(name, value) {
+      this.options[name] = value;
       chromeStorage.set(name, value);
     },
   },
@@ -186,8 +188,6 @@ export default {
         color: #aaaaaa;
         margin-top: 10px;
         margin-bottom: 0;
-
-
       }
     }
   }
