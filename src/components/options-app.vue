@@ -105,90 +105,52 @@ export default {
 </script>
 
 <style lang="scss">
-  // @import "includes/grid";
-  // @import "includes/switch";
+body {
+  background: #efefe9;
+  margin: 0;
+  padding: 0;
+  color: #555;
+  font-size: 13px;
+}
 
-  body {
-    background: #efefe9;
-    margin: 0;
-    padding: 0;
-    color: #555;
-    font-size: 13px;
-  }
+.board {
+  width: 75%;
+  margin: 60px auto;
+  background: #fff;
 
-  .board {
-    width: 75%;
-    margin: 60px auto;
-    background: #fff;
+  .board-header {
+    background: #fafafa url('../img/bg.png');
+    background-size: 30%;
+    border-bottom: 1px solid #eeeeee;
+    padding: 10px 30px;
 
-    .board-header {
-      background: #fafafa url('../img/bg.png');
-      background-size: 30%;
-      border-bottom: 1px solid #eeeeee;
-      padding: 10px 30px;
-
-      .title {
-        margin-top: 10px;
-        margin-bottom: 10px;
-        font-size: 30px;
-        line-height: 48px;
-        display: inline-block;
-      }
-
-      img {
-        vertical-align: top;
-      }
-    }
-  }
-
-  .board-content {
-    padding: 30px;
-  }
-
-  input[type=range] {
-    vertical-align: middle;
-  }
-
-  .command {
-    padding: 2px 4px;
-    font-size: 1.2em;
-    color: #c7254e;
-    background-color: #f9f2f4;
-    border-radius: 4px;
-  }
-
-  .form-group {
-    margin-bottom: 15px;
-    padding-bottom: 15px;
-    border-bottom: 1px solid #f0f0f0;
-
-    &:last-child {
-      border-bottom: 0;
-      margin-bottom: 0;
-      padding-bottom: 0;
+    .title {
+      margin-top: 10px;
+      margin-bottom: 10px;
+      font-size: 30px;
+      line-height: 48px;
+      display: inline-block;
     }
 
-    .control-label {
-      margin: 3px 0;
-      float: left;
-      width: 200px;
-      font-weight: bold;
-      font-size: 1.1em;
-    }
-
-    .controls {
-      margin-left: 200px;
-
-      .radio-inline {
-        display: inline-block;
-        margin-right: 5px;
-      }
-
-      .hint {
-        color: #aaaaaa;
-        margin-top: 10px;
-        margin-bottom: 0;
-      }
+    img {
+      vertical-align: top;
     }
   }
+}
+
+.board-content {
+  padding: 30px;
+}
+
+input[type=range] {
+  vertical-align: middle;
+}
+
+.command {
+  padding: 2px 4px;
+  font-size: 1.2em;
+  color: #c7254e;
+  background-color: #f9f2f4;
+  border-radius: 4px;
+}
 </style>
