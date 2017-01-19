@@ -1,30 +1,24 @@
 <template>
-  <form-control :label="label">
-    <label class="radio-inline"
-      v-for="item in radioOptions">
+  <div>
+    <label class="radio-inline" v-for="option in options">
       <input type="radio"
-        v-model="option"
-        :name="optionName"
-        :value="item.key" />
-      {{ item.text }}
+        v-model="value"
+        :value="option.key" />
+      {{ option.text }}
     </label>
-  </form-control>
+  </div>
 </template>
 
 <script>
-import RADIO_OPTIONS from '../variables';
-import FormControlMixin from '../mixins/form-control-mixin';
-
 export default {
-  mixins: [FormControlMixin],
-  computed: {
-    radioOptions() {
-      return RADIO_OPTIONS[this.optionName];
+  props: ['options', 'value'],
+  watch: {
+    value(newValue) {
+      this.$emit('change', newValue);
     },
   },
 };
 </script>
 
 <style lang="sass">
-
 </style>

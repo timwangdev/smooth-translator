@@ -9,7 +9,7 @@
 
 <script>
 export default {
-  name: 'form-control',
+  name: 'form-group',
   props: ['label'],
 };
 </script>

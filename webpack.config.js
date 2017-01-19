@@ -35,6 +35,6 @@ module.exports = {
     }
   },
   eslint: {
-    failOnError: true
+    failOnError: false
   }
 };

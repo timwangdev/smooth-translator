@@ -7,21 +7,33 @@
     </div>
 
     <div class="board-content">
+      <pre>{{ options }}</pre>
       <form class="form-horizontal" role="form">
-        <radios-group label="翻译服务"
-          :options="options"
-          optionName="translator" />
-        <radios-group label="划词翻译结果显示位置"
-          :options="options"
-          optionName="notifyMode" />
-        <slider label="划词翻译结果显示时长"
-          :options="options"
-          min="3"
-          max="10"
-          optionName="notifyTimeout" />
-        <rule-list label="启用/禁用页面划词翻译"
-          :options="options"
-          optionName="siteRules" />
+        <form-group label="翻译服务">
+          <radios-group
+            :value="options.translator"
+            :options="translatorOptions"
+            @change="updateOption('translator', $event)" />
+        </form-group>
+
+        <form-group label="划词翻译结果显示位置">
+          <radios-group
+            :value="options.notifyMode"
+            :options="notifyModeOptions"
+            @change="updateOption('notifyMode', $event)" />
+        </form-group>
+
+        <form-group label="划词翻译结果显示时长" >
+          <slider min="3" max="10"
+            :value="options.notifyTimeout"
+            @change="updateOption('notifyTimeout', $event)" />
+        </form-group>
+
+        <form-group label="启用/禁用页面划词翻译">
+          <rule-list
+            :rules="options.siteRules"
+            @change="updateOption('siteRules', $event)" />
+        </form-group>
         <!-- <div class="form-group">
           <label class="control-label">启用页面划词</label>
           <div class="controls">
@@ -53,20 +65,36 @@
 import chromeStorage from 'chrome-storage-wrapper';
 
 import defaults from '../defaults';
+import RADIO_OPTIONS from '../variables';
 import RadiosGroup from './radios-group.vue';
 import Slider from './slider.vue';
 import RuleList from './rule-list.vue';
+import FormGroup from './form-group.vue';
 
 export default {
   data() {
     return {
-      options: defaults,
+      options: Object.assign({}, defaults),
     };
   },
   created() {
     chromeStorage.getAll().then(options => (this.options = options));
   },
+  computed: {
+    translatorOptions() {
+      return RADIO_OPTIONS.translator;
+    },
+    notifyModeOptions() {
+      return RADIO_OPTIONS.notifyMode;
+    },
+  },
+  methods: {
+    updateOption(name, value) {
+      chromeStorage.set(name, value);
+    },
+  },
   components: {
+    FormGroup,
     RadiosGroup,
     Slider,
     RuleList,

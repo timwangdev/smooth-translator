@@ -1,21 +1,23 @@
 <template>
-  <form-control :label="label">
+  <div>
     <input type="range"
       :min="min"
       :max="max"
       step="1"
-      v-model="option"
+      v-model="value"
       data-highlight="true" />
-    <span class="label label-info">{{ option }} 秒</span>
-  </form-control>
+    <span class="label label-info">{{ value }} 秒</span>
+  </div>
 </template>
 
 <script>
-import FormControlMixin from '../mixins/form-control-mixin';
-
 export default {
-  mixins: [FormControlMixin],
-  props: ['min', 'max'],
+  props: ['min', 'max', 'value'],
+  watch: {
+    value(value) {
+      this.$emit('change', value);
+    },
+  },
 };
 </script>
 
