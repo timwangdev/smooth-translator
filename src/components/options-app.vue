@@ -2,7 +2,7 @@
   <div id="app" class="board">
     <div class="board-header">
       <strong class="title">
-        <img src="icon48.png" alt="Focus Dict Logo" /> 偏好设定
+        <img src="icon48.png" alt="Focus Dict Logo" /> 偏好设定{{ title }}
       </strong>
     </div>
 
@@ -63,23 +63,19 @@
 </template>
 
 <script>
-import chromeStorage from 'chrome-storage-wrapper';
-
-import defaults from '../defaults';
 import RADIO_OPTIONS from '../variables';
 import RadiosGroup from './radios-group.vue';
 import Slider from './slider.vue';
 import RuleList from './rule-list.vue';
 import FormGroup from './form-group.vue';
+import OptionsLoader from '../mixins/options-loader';
 
 export default {
+  mixins: [OptionsLoader],
   data() {
     return {
-      options: Object.assign({}, defaults),
+      title: 'hello',
     };
-  },
-  created() {
-    chromeStorage.getAll().then(options => (this.options = options));
   },
   computed: {
     translatorOptions() {
@@ -87,12 +83,6 @@ export default {
     },
     notifyModeOptions() {
       return RADIO_OPTIONS.notifyMode;
-    },
-  },
-  methods: {
-    updateOption(name, value) {
-      this.options[name] = value;
-      chromeStorage.set(name, value);
     },
   },
   components: {
