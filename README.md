@@ -21,3 +21,42 @@ http://gdgxian.org/crx-transit/
 - 更新历史 http://git.io/pz7B
 - 项目主页 http://git.io/pz7K
 - 问题和反馈 http://git.io/pz7M
+
+# 开发
+
+## 安装依赖
+
+首先保证你的机器上装有`Node`, 同时`Node`的版本大于`6.0`
+
+然后安装`bower`和`grunt`:
+
+```bash
+npm install -g bower grunt
+```
+
+最后, 在项目根目录运行`bower install`和`npm install`安装所有的依赖.
+
+## 构建一个本地可运行的Chrome插件
+
+```bash
+grunt build
+```
+
+然后使用Chrome浏览器, 打开`Developer mode`, 然后`Load unpacked extension`, 选择项目根目录下的`build`目录即可.
+
+## 打包
+
+```bash
+grunt dist
+```
+
+dist目录下将会有一个`.zip`压缩包
+
+
+## 开发模式
+
+```bash
+grunt default
+```
+
+将会对项目进行编译, 然后检测文件的改变, 实时编译项目文件.
