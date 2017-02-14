@@ -9,6 +9,8 @@ angular
       window.close();
     };
 
+    // $scope.sharedTranslator
+
     $scope.nextTranslator = function() {
       const translators = ['baidu', 'youdao', 'bing'];
       
