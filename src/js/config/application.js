@@ -10,6 +10,7 @@ app.setup({
     notifyMode: 'margin',   // 结果默认显示在右上角
     sharedTranslator: true, // 是否使用共享的翻译服务
     translator: 'youdao',   // 默认的翻译服务
+    translatorApiKey: ''
   }
 });
 

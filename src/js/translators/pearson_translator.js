@@ -22,12 +22,13 @@ export default class PearsonTranslator {
   }
 
   _request(text, callback) {
+    console.log($scope.options.translatorApiKey);
     const settings = {
-      url: 'https://api.pearson.com/v2/dictionaries/ldoce5/entries?=',
+      url: 'https://api.pearson.com/v2/dictionaries/ldoce5/entries',
       type: 'GET',
       data: {
         headword: text,
-        apikey: 'AUTO'
+        apikey: $scope.options.translatorApiKey
       },
       headers: {
         'Content-Type': 'application/json'
