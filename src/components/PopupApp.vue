@@ -4,13 +4,13 @@
       <textarea
         placeholder="输入文字进行翻译 ..."
         v-model.trim="source"
-        v-autosize="source"
-        @keydown.esc="resetSource"
-        @keydown.ctrl.enter="insertNewLine"
-        @keydown.meta.enter="insertNewLine"
-        @keydown.enter="translateSource"></textarea>
+        @keydown.esc.prevent.stop="escape"
+        @keydown.enter="translate"></textarea>
 
-      <div id="result">{{ output }}</div>
+      <div class="result" :class="status" v-if="result">
+        <pre class="phonetic" v-if="result.phonetic">{{ result.phonetic }}</pre>
+        <div class="translation" v-html="translation"></div>
+      </div>
     </div>
 
 <!--     <footer ng-controller="OptionsCtrl">
@@ -41,36 +41,44 @@ export default {
   data() {
     return {
       source: '',
-      output: '',
+      result: null,
     };
   },
+  computed: {
+    status() {
+      return this.result.translation ? 'success' : 'error';
+    },
+    translation() {
+      return this.result.translation || '未找到释义';
+    },
+  },
   methods: {
-    resetSource(event) {
-      if (event) {
-        event.stopPropagation();
-        event.preventDefault();
+    escape() {
+      if (this.source) {
+        this.reset();
+      } else {
+        this.exit();
       }
+    },
+    reset() {
       this.source = '';
-      this.output = '';
+      this.result = null;
     },
-    translateSource: _.debounce(function() {
+    exit() {
+      window.close();
+    },
+    translate: _.debounce(function() {
       const message = { type: 'selection', text: this.source };
-      chrome.runtime.sendMessage(message, () => {
-        this.output = 'This is the result';
-      });
-    }, 500),
-    insertNewLine(event) {
-      event.stopPropagation();
-      event.preventDefault();
-
-      console.log('insert new line');
-      document.execCommand('insertText', false, '\n');
-    },
+      chrome.runtime.sendMessage(message, (result) => this.result = result);
+    }, 300),
   },
   watch: {
     source() {
-      this.output = '正在等待输入完成...';
-      this.translateSource();
+      if (this.source) {
+        this.translate();
+      } else {
+        this.reset();
+      }
     },
   },
 };
@@ -106,25 +114,25 @@ textarea {
   }
 }
 
-.transit-result {
+.result {
   max-height: 200px;
-  margin-top: 7px;
   padding: 3px 6px;
   overflow-y: auto;
   white-space: pre-line;
 
-  &.transit-success {
+  &.success {
     background: #efffef;
     color: #2B3F29;
   }
 
-  &.transit-warning {
+  &.error {
     background: #FFF8DC;
     color: #888888;
   }
 
-  h6 {
-    display: none;
+  .phonetic {
+    margin-top: 0;
+    margin-bottom: 5px;
   }
 }
 </style>

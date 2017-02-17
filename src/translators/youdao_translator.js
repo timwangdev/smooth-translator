@@ -12,11 +12,9 @@ export default class YoudaoTranslator extends BaseTranslator {
 
   parseWord(page) {
     const $result = $(this.sanitizeHTML(page)).find('#ec_contentWrp');
+    const response = {};
 
-    let response = null;
     if ($result.length) {
-      response = {};
-
       const $phonetic = $result.find('.phonetic');
       if ($phonetic.length) {
         response.phonetic = $phonetic.last().text();
@@ -48,7 +46,7 @@ export default class YoudaoTranslator extends BaseTranslator {
 
     $.ajax(settings)
       .done(page => callback(this.parseWord(page)))
-      .fail(() => callback(null));
+      .fail(() => callback({}));
   }
 
   requestText(text, callback) {
@@ -73,7 +71,7 @@ export default class YoudaoTranslator extends BaseTranslator {
 
   translate(text, callback) {
     if (/^\s*$/.test(text)) {
-      callback(null);
+      callback({});
     } else if (/^[a-zA-Z]+$/.test(text)) {
       this.requestWord(text, callback);
     } else {

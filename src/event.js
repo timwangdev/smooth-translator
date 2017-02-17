@@ -2,7 +2,7 @@
 // import app from './config/application';
 import merge from 'deepmerge';
 import chromeStorage from 'chrome-storage-wrapper';
-
+import translators from './translators';
 import defaults from './defaults';
 
 // Key name to store current text in local storage
@@ -60,14 +60,15 @@ chrome.runtime.onInstalled.addListener(() => {
     .then(options => chromeStorage.set(options));
 });
 
-// Listen to extension update and show update notes
-// TODO: open release note page in new tab
-// chrome.runtime.onInstalled.addListener(details => {
-//   if (details.reason == 'update') {
-//     // FIXME: Use changelog page in new tab
-//     app.showUpdateNotes();
-//   }
-// });
+// Register translate handler
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  chromeStorage.get('translator')
+    // .then(options => translators[options.translator])
+    .then(options => translators['youdao'])
+    .then(translator => translator.translate(message.text, sendResponse));
+
+  return true;
+});
 
 // Register command for quick link inspect switch
 // chrome.commands.onCommand.addListener(command => {
