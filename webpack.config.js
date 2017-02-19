@@ -7,7 +7,7 @@ module.exports = {
     event: './src/event.js',
     options: './src/options.js',
     page: './src/page.js',
-    popup: './src/popup.vue'
+    popup: './src/popup.js'
   },
   output: {
     path: './build',

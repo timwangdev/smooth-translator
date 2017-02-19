@@ -1,20 +1,18 @@
 /**
  * Bing Translator
  */
-import sugar from 'sugar';
 import $ from 'jquery';
-import { sanitizeHTML } from '../lib/utils';
+import BaseTranslator from './base_translator';
 
 const DICT_URL = 'http://cn.bing.com/dict/search';
 const TRANSLATE_URL = 'http://cn.bing.com/translator/api/Translate/TranslateArray?from=-&to=zh-CHS';
-const REFERER = 'http://cn.bing.com/dict/?mkt=zh-cn&setlang=zh';
 
-export default class BingTranslator {
-  constructor() {
-    this.name = 'bing';
+export default class BingTranslator extends BaseTranslator {
+  get name() {
+    return 'bing';
   }
 
-  _parseMean(index, meanNode) {
+  parseMean(index, meanNode) {
     const $mean = $(meanNode);
     const def = $mean.find('.def').text();
     let   pos = $mean.find('.pos').text();
@@ -28,11 +26,12 @@ export default class BingTranslator {
     return `${pos}${def}`;
   }
 
-  _parseWord(page) {
+  parseWord(page) {
     var $result = $(sanitizeHTML(page));
+    let response = null;
 
     if ($result.find('.qdef').length) {
-      var response = {};
+      response = {};
 
       var $phonetic = $result.find('.hd_prUS');
       if ($phonetic.length) {
@@ -45,19 +44,19 @@ export default class BingTranslator {
 
       return response;
     } else if ($result.find('.p1-11')) {
-      return { translation: $result.find('.p1-11').text() };
-    } else {
-      return null;
+      response = { translation: $result.find('.p1-11').text() };
     }
+
+    return response;
   }
 
-  _parseText(data) {
+  parseText(data) {
     const translation = data.items.map(item => item.text).join('<br/><br/>');
 
     return { translation: translation };
   }
 
-  _requestWord(text, callback) {
+  requestWord(text, callback) {
     const settings = {
       url: DICT_URL,
       data: { q: text },
@@ -71,34 +70,34 @@ export default class BingTranslator {
       .fail(() => callback(null));
   }
 
-  _buildLine(text, index) {
+  buildLine(text, index) {
     console.log(text, index);
     const timestamp = new Date().getTime();
     
     return {
       id: timestamp + index,
-      text: text
+      text,
     };
   }
 
-  _splitLines(text) {
-    return text.split(/\s*\n\s*/mg).map(this._buildLine);
+  splitLines(text) {
+    return text.split(/\s*\n\s*/mg).map(this.buildLine);
   }
 
-  _requestText(text, callback) {
+  requestText(text, callback) {
     const settings = {
       url: TRANSLATE_URL,
       type: 'POST',
-      data: JSON.stringify(this._splitLines(text)),
+      data: JSON.stringify(this.splitLines(text)),
       contentType: 'application/json; charset=utf-8',
       dataType: 'json',
       headers: {
-        'Accept-Language': 'zh-CN,zh;q=0.8'
-      }
+        'Accept-Language': 'zh-CN,mu;d=0.8',
+      },
     };
 
     $.ajax(settings)
-      .done(data => callback(this._parseText(data)))
+      .done(data => callback(this.parseText(data)))
       .fail(() => callback(null));
   }
 
@@ -106,9 +105,9 @@ export default class BingTranslator {
     if (/^\s*$/.test(text)) {
       callback(null);
     } else if (/^[a-zA-Z]+$/.test(text)) {
-      this._requestWord(text, callback);
+      this.requestWord(text, callback);
     } else {
-      this._requestText(text, callback);
+      this.requestText(text, callback);
     }
   }
 }

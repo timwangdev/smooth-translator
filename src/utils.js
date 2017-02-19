@@ -9,19 +9,20 @@ export function renderTranslation(query, result) {
     className = 'transit-success';
   }
 
-  return `` +
-    `<div class="transit-result ${className}">` +
-    `  <h6>${query}</h6>` +
-    `  <code>${phonetic || ''}</code>` +
-    `  <pre>${translation}</pre>` +
-    `</div>`;
+  return `
+    <div class="transit-result ${className}">
+      <h6>${query}</h6>
+      <code>${phonetic || ''}</code>
+      <pre>${translation}</pre>
+    </div>
+  `;
 }
 
 function getClientHeight() {
   const bodyHeight = document.body.clientHeight;
-  const docHeight  = document.documentElement.clientHeight;
+  const docHeight = document.documentElement.clientHeight;
 
-  let clientHeight = bodyHeight < docHeight ?  bodyHeight: docHeight;
+  let clientHeight = bodyHeight < docHeight ? bodyHeight : docHeight;
   if (clientHeight === 0) {
     clientHeight = docHeight;
   }
@@ -38,24 +39,28 @@ function getPosition(evt, selection) {
   }
 
   const left = rect.left + document.body.scrollLeft;
-  const top  = rect.top + document.body.scrollTop;
+  const top = rect.top + document.body.scrollTop;
+  const position = { left };
 
   if (rect.top >= 150) {
-    return { left: left, bottom: getClientHeight() - top };
+    position.bottom = getClientHeight() - top;
   } else {
-    return { left: left, top: top + rect.height + 5 };
+    position.top = top + rect.height + 5;
   }
+
+  return position;
 }
 
 export function getSelection(evt) {
   const selection = window.getSelection();
   const text = selection.toString().trim();
 
+  let result = null;
   if (text) {
-    return { text: text, position: getPosition(evt, selection) };
-  } else {
-    return null;
+    result = { text, position: getPosition(evt, selection) };
   }
+
+  return result;
 }
 
 export function clearSelection() {
@@ -63,14 +68,6 @@ export function clearSelection() {
   if (selection) {
     selection.empty();
   }
-}
-
-export function sanitizeHTML(html) {
-  var match = html.match(/<body[\s\S]*<\/body>/img);
-  return match[0].replace(/<script([\s\S]*?)<\/script>/img, '')
-                 .replace(/<style([\s\S]*?)<\/style>/img, '')
-                 .replace(/<img([\s\S]*?)>/img, '')
-                 .replace(/<video([\s\S]*?)>/img, '');
 }
 
 export function stopPropagation(event) {

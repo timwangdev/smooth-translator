@@ -11,24 +11,12 @@
         <pre class="phonetic" v-if="result.phonetic">{{ result.phonetic }}</pre>
         <div class="translation" v-html="translation"></div>
       </div>
-    </div>
 
-<!--     <footer ng-controller="OptionsCtrl">
-      <a href="#" title="偏好设定"
-         class="pull-right"
-         ng-click="openExtensionPage()">
-         <span class="icon icon-cog"></span>
-      </a>
-
-      <a href="#" title="点击切换翻译服务"
-         class="btn-translator pull-right {{options.translator}}"
-         ng-click="nextTranslator()"></a>
-
-      <label class="checkbox-inline" title="页面划词">
-        <input type="checkbox" ng-model="options.pageInspect" />
-        <span class="icon icon-text"></span>
+      <label :class="{ enabled: currentRule.enabled }">
+        <input type="checkbox" v-model="currentRule.enabled" />
+        在当前网站启用划词翻译
       </label>
-    </footer> -->
+    </div>
   </div>
 </template>
 
@@ -50,6 +38,13 @@ export default {
     },
     translation() {
       return this.result.translation || '未找到释义';
+    },
+    defaultRule() {
+      return _.find(this.options.siteRules, { site: '*' });
+    },
+    currentRule() {
+      const domain = document.location.hostname;
+      return _.find(this.options.siteRules, { site: domain }) || this.defaultRule;
     },
   },
   methods: {
@@ -133,6 +128,14 @@ textarea {
   .phonetic {
     margin-top: 0;
     margin-bottom: 5px;
+  }
+}
+
+label {
+  font-size: 0.9em;
+
+  &.enabled {
+    color: green;
   }
 }
 </style>

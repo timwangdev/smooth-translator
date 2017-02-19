@@ -1,14 +1,10 @@
-/*
- * TransIt Popup
- * 
- * jshint strict: true
- */
+import Vue from 'vue';
+import VueAutosize from 'vue-autosize';
+import PopupApp from './components/PopupApp.vue';
 
-var angular = require('angular');
-var elastic = require('angular-elastic');
+Vue.use(VueAutosize);
 
-angular.module('TransitApp', ['monospaced.elastic']);
-
-require('./ng/filters/html_safe_filter');
-require('./ng/controllers/translate_controller');
-require('./ng/controllers/options_controller');
+new Vue({
+  el: '#app',
+  render: h => h(PopupApp),
+});
