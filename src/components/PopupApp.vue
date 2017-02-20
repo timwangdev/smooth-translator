@@ -12,10 +12,15 @@
         <div class="translation" v-html="translation"></div>
       </div>
 
-      <label :class="{ enabled: currentRule.enabled }">
-        <input type="checkbox" v-model="currentRule.enabled" />
-        在当前网站启用划词翻译
-      </label>
+			<footer>
+				<a href="#" title="偏好设定" class="btn-settings" @click="settings">
+					<icon name="settings" :w="14" :h="14" />
+				</a>
+				<label :class="{ enabled: currentRule.enabled }">
+					<input type="checkbox" v-model="currentRule.enabled" />
+					在当前网站启用划词翻译
+				</label>
+			</footer>
     </div>
   </div>
 </template>
@@ -23,6 +28,7 @@
 <script>
 import _ from 'lodash';
 import OptionsLoader from '../mixins/options-loader';
+import { openExtensionPage } from '../utils';
 
 export default {
   mixins: [OptionsLoader],
@@ -61,6 +67,10 @@ export default {
     },
     exit() {
       window.close();
+    },
+    settings() {
+    	openExtensionPage('options.html');
+    	this.exit();
     },
     translate: _.debounce(function() {
       const message = { type: 'selection', text: this.source };
@@ -137,5 +147,13 @@ label {
   &.enabled {
     color: green;
   }
+}
+
+.btn-settings {
+	float: right;
+
+	.icon {
+		vertical-align: middle;
+	}
 }
 </style>

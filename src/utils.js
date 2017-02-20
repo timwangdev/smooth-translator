@@ -1,3 +1,20 @@
+import _ from 'lodash';
+
+export function openExtensionPage(filename) {
+  var optionsUrl = chrome.extension.getURL(filename);
+
+  chrome.tabs.query({}, function(tabs) {
+    var optionTab = _.find(tabs, { url: optionsUrl });
+
+    if (optionTab) {
+      chrome.tabs.reload(optionTab.id);
+      chrome.tabs.update(optionTab.id, { highlighted: true });
+    } else {
+      chrome.tabs.create({ url: optionsUrl });
+    }
+  });
+}
+
 export function renderTranslation(query, result) {
   let phonetic = '';
   let translation = '未找到释义';

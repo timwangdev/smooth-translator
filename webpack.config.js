@@ -18,7 +18,8 @@ module.exports = {
       { test: /\.js$/, loader: 'babel!eslint', exclude: /node_modules/ },
       { test: /\.vue$/, loader: 'vue!eslint' },
       { test: /\.scss$/, loader: 'sass' },
-      { test: /\.png$/,    loader: "url-loader?limit=10000&minetype=image/png" }
+      { test: /\.png$/, loader: "url-loader?limit=10000&minetype=image/png" },
+      { test: /\.svg$/, loader: 'vue-svg' }
     ]
   },
   plugins: [
