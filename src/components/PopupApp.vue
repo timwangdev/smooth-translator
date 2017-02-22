@@ -1,11 +1,13 @@
 <template>
-  <div id="app"
+  <div id="app">
+		<loader v-if="loading" />
     <div class="translator">
       <textarea
         placeholder="输入文字进行翻译 ..."
         v-model.trim="source"
         @keydown.esc.prevent.stop="escape"
         @keydown.enter="translate"></textarea>
+
 
       <div class="result" :class="status" v-if="result">
         <pre class="phonetic" v-if="result.phonetic">{{ result.phonetic }}</pre>
@@ -29,6 +31,7 @@
 import _ from 'lodash';
 import URL from 'url-parse';
 import OptionsLoader from '../mixins/options-loader';
+import Loader from './Loader.vue';
 import { openExtensionPage } from '../utils';
 
 export default {
@@ -38,6 +41,7 @@ export default {
       source: '',
       result: null,
       domain: '*',
+      loading: false,
     };
   },
   created() {
@@ -81,7 +85,12 @@ export default {
     },
     translate: _.debounce(function() {
       const message = { type: 'selection', text: this.source };
-      chrome.runtime.sendMessage(message, (result) => this.result = result);
+
+      this.loading = true;
+      chrome.runtime.sendMessage(message, (result) => {
+      	this.result = result
+      	this.loading = false;
+      });
     }, 300),
   },
   watch: {
@@ -93,12 +102,15 @@ export default {
       }
     },
   },
+  components: {
+  	Loader,
+	},
 };
 </script>
 
 <style lang="scss">
 body {
-  width: 200px;
+  width: 216px;
   margin: 0;
   padding: 7px;
   font-size: 14px;
