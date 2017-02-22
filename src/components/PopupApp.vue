@@ -17,7 +17,7 @@
 					<icon name="settings" :w="14" :h="14" />
 				</a>
 				<label :class="{ enabled: currentRule.enabled }">
-					<input type="checkbox" v-model="currentRule.enabled" />
+					<input type="checkbox" v-model="currentRule.enabled" @change="saveRule" />
 					在当前网站启用划词翻译
 				</label>
 			</footer>
@@ -27,6 +27,7 @@
 
 <script>
 import _ from 'lodash';
+import URL from 'url-parse';
 import OptionsLoader from '../mixins/options-loader';
 import { openExtensionPage } from '../utils';
 
@@ -36,7 +37,11 @@ export default {
     return {
       source: '',
       result: null,
+      domain: '*',
     };
+  },
+  created() {
+    chrome.tabs.query({ active: true }, (tabs) => this.domain = new URL(tabs[0].url).hostname);
   },
   computed: {
     status() {
@@ -49,8 +54,7 @@ export default {
       return _.find(this.options.siteRules, { site: '*' });
     },
     currentRule() {
-      const domain = document.location.hostname;
-      return _.find(this.options.siteRules, { site: domain }) || this.defaultRule;
+      return _.find(this.options.siteRules, (rule) => this.domain.endsWith(rule.site)) || this.defaultRule;
     },
   },
   methods: {
@@ -71,6 +75,9 @@ export default {
     settings() {
     	openExtensionPage('options.html');
     	this.exit();
+    },
+    saveRule() {
+      this.updateOption('siteRules', this.options.siteRules);
     },
     translate: _.debounce(function() {
       const message = { type: 'selection', text: this.source };
@@ -143,6 +150,8 @@ textarea {
 
 label {
   font-size: 0.9em;
+  color: gray;
+  user-select: none;
 
   &.enabled {
     color: green;
