@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import OptionsApp from './components/options-app.vue';
+import OptionsApp from './components/OptionsApp.vue';
 
 new Vue({
   el: '#app',

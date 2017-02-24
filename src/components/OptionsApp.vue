@@ -64,10 +64,10 @@
 
 <script>
 import RADIO_OPTIONS from '../variables';
-import RadiosGroup from './radios-group.vue';
-import Slider from './slider.vue';
-import RuleList from './rule-list.vue';
-import FormGroup from './form-group.vue';
+import RadiosGroup from './RadiosGroup.vue';
+import Slider from './Slider.vue';
+import RuleList from './RuleList.vue';
+import FormGroup from './FormGroup.vue';
 import OptionsLoader from '../mixins/options-loader';
 
 export default {
