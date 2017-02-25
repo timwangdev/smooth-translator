@@ -7,7 +7,8 @@ module.exports = {
     event: './src/event.js',
     options: './src/options.js',
     page: './src/page.js',
-    popup: './src/popup.js'
+    popup: './src/popup.js',
+    inspector: './src/page/inspector.js'
   },
   output: {
     path: './build',

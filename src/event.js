@@ -2,6 +2,9 @@
 // import app from './config/application';
 import merge from 'deepmerge';
 import chromeStorage from 'chrome-storage-wrapper';
+import { dispatchMessage } from './helpers/message';
+import { getActiveTab } from './helpers/tabs';
+import { findRule } from './helpers/rules';
 import translators from './translators';
 import defaults from './defaults';
 
@@ -27,11 +30,6 @@ import defaults from './defaults';
 // function translateHanlder(message, sender, sendResponse) {
 //   const translator = translators[app.options.translator];
 //   translator.translate(message.text, sendResponse);
-// }
-
-// Save current selection to localStorage
-// function selectionHandler(message, sender, sendResponse) {
-//   currentText(message.text);
 // }
 
 // function currentTextHandler(message, sender, sendResponse) {
@@ -60,15 +58,37 @@ chrome.runtime.onInstalled.addListener(() => {
     .then(options => chromeStorage.set(options));
 });
 
-// Register translate handler
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+function translatorHandler(message, sender, sendResponse) {
   chromeStorage.get('translator')
     // .then(options => translators[options.translator])
     .then(options => translators['youdao'])
     .then(translator => translator.translate(message.text, sendResponse));
+}
 
-  return true;
+// Save current selection to localStorage
+function selectionHandler(message, sender, sendResponse) {
+  localStorage.setItem('selection', message.text);
+  getActiveTab(tab => {
+    chromeStorage.get('siteRules')
+      .then(options => findRule(options.siteRules, tab.hostname))
+      .then(rule => {
+        if (rule.enabled) {
+          chrome.tabs.sendMessage(sender.tab.id, {
+            type: 'translate',
+            text: message.text,
+          });
+        }
+      });
+  });
+}
+
+dispatchMessage({
+  translator: translatorHandler,
+  selection: selectionHandler,
 });
+
+// Register translate handler
+
 
 // Register command for quick link inspect switch
 // chrome.commands.onCommand.addListener(command => {

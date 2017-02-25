@@ -1,35 +1,26 @@
 import $ from 'jquery';
 import Vue from 'vue';
+import { dispatchMessage } from './helpers/message';
 import ResultList from './components/ResultList.vue';
 
-const LIST_ID = 'cgt-list';
+let app = null;
 
-class App {
-  constructor() {
-    this.el = null;
-    this.vm = null;
+function getApp() {
+  if ($('#cgt-list').length == 0) {
+    $('<div id="cgt-list"></div>').appendTo('body');
+    app = new Vue({
+      el: '#cgt-list',
+      render: h => h(ResultList),
+    });
   }
 
-  static get instance() {
-    const app = new App();
-    app.ensureList();
-    app.ensureVM();
-  }
-
-  ensureList() {
-    if (!this.el) {
-      this.el = $(`<div id="${LIST_ID}"></div>`).appendTo('body');
-    }
-  }
-
-  ensureVM() {
-    if (!this.vm) {
-      this.vm = new Vue({
-        el: `#${LIST_ID}`,
-        render: h => h(ResultList),
-      });
-    }
-  }
+  return app.$children[0]
 }
 
-App.instance;
+function translateHandler(message, sender, sendResponse) {
+  getApp().translate(message.text);
+}
+
+dispatchMessage({
+  translate: translateHandler,
+});

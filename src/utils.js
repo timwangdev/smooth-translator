@@ -68,24 +68,7 @@ function getPosition(evt, selection) {
   return position;
 }
 
-export function getSelection(evt) {
-  const selection = window.getSelection();
-  const text = selection.toString().trim();
 
-  let result = null;
-  if (text) {
-    result = { text, position: getPosition(evt, selection) };
-  }
-
-  return result;
-}
-
-export function clearSelection() {
-  const selection = window.getSelection();
-  if (selection) {
-    selection.empty();
-  }
-}
 
 export function stopPropagation(event) {
   event.stopPropagation();

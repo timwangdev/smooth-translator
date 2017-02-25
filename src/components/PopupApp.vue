@@ -8,7 +8,6 @@
         @keydown.esc.prevent.stop="escape"
         @keydown.enter="translate"></textarea>
 
-
       <div class="result" :class="status" v-if="result">
         <pre class="phonetic" v-if="result.phonetic">{{ result.phonetic }}</pre>
         <div class="translation" v-html="translation"></div>
@@ -33,6 +32,8 @@ import URL from 'url-parse';
 import OptionsLoader from '../mixins/options-loader';
 import Loader from './Loader.vue';
 import { openExtensionPage } from '../utils';
+import { getActiveTab } from '../helpers/tabs';
+import { findRule } from '../helpers/rules';
 
 export default {
   mixins: [OptionsLoader],
@@ -45,7 +46,7 @@ export default {
     };
   },
   created() {
-    chrome.tabs.query({ active: true }, (tabs) => this.domain = new URL(tabs[0].url).hostname);
+    getActiveTab(tab => this.domain = tab.hostname);
   },
   computed: {
     status() {
@@ -54,11 +55,8 @@ export default {
     translation() {
       return this.result.translation || '未找到释义';
     },
-    defaultRule() {
-      return _.find(this.options.siteRules, { site: '*' });
-    },
     currentRule() {
-      return _.find(this.options.siteRules, (rule) => this.domain.endsWith(rule.site)) || this.defaultRule;
+      return findRule(this.options.siteRules, this.domain);
     },
   },
   methods: {
