@@ -16,8 +16,8 @@ module.exports = {
   },
   module: {
     loaders: [
-      { test: /\.js$/, loader: 'babel!eslint', exclude: /node_modules/ },
-      { test: /\.vue$/, loader: 'vue!eslint' },
+      { test: /\.js$/, loader: 'babel', exclude: /node_modules/ },
+      { test: /\.vue$/, loader: 'vue' },
       { test: /\.scss$/, loader: 'sass' },
       { test: /\.png$/, loader: "url-loader?limit=10000&minetype=image/png" },
       { test: /\.svg$/, loader: 'vue-svg' }
@@ -35,8 +35,5 @@ module.exports = {
     loaders: {
       scss: 'vue-style-loader!css-loader!sass-loader'
     }
-  },
-  eslint: {
-    failOnError: false
   }
 };
