@@ -82,7 +82,7 @@ export default {
       this.updateOption('siteRules', this.options.siteRules);
     },
     translate: _.debounce(function() {
-      const message = { type: 'selection', text: this.source };
+      const message = { type: 'translate', text: this.source };
 
       this.loading = true;
       chrome.runtime.sendMessage(message, (result) => {

@@ -58,7 +58,7 @@ chrome.runtime.onInstalled.addListener(() => {
     .then(options => chromeStorage.set(options));
 });
 
-function translatorHandler(message, sender, sendResponse) {
+function translateHandler(message, sender, sendResponse) {
   chromeStorage.get('translator')
     // .then(options => translators[options.translator])
     .then(options => translators['youdao'])
@@ -83,12 +83,9 @@ function selectionHandler(message, sender, sendResponse) {
 }
 
 dispatchMessage({
-  translator: translatorHandler,
-  selection: selectionHandler,
+  translate: translateHandler,
+  // selection: selectionHandler,
 });
-
-// Register translate handler
-
 
 // Register command for quick link inspect switch
 // chrome.commands.onCommand.addListener(command => {
