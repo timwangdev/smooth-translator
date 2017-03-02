@@ -1,8 +1,9 @@
 <template>
-  <div id="cgt-list">
+  <div id="cst-list" class="cst-list">
     <result-toast
       v-for="result in results"
-      :result="result">
+      :result="result"
+      @close="removeResult(result.text)">
     </result-toast>
   </div><!-- .board -->
 </template>
@@ -21,15 +22,20 @@ export default {
   },
   methods: {
     translate(text) {
-      const existed = _.some(this.results, { text });
-
-      if (!existed) {
+      if (this.findIndex(text) == -1) {
         this.results.push({
           text: text,
           status: 'pending',
+          show: true
         });
       }
     },
+    removeResult(text) {
+      this.results.splice(this.findIndex(text), 1);
+    },
+    findIndex(text) {
+      return _.findIndex(this.results, { text });
+    }
   },
   components: {
     ResultToast,
@@ -38,28 +44,24 @@ export default {
 </script>
 
 <style lang="scss">
-#cgt-list {
-  background: transparent;
+@import '../scss/reset';
+
+.cst-list {
+  @include reset;
+}
+
+#cst-list {
   position: fixed;
-  margin: 0;
-  padding: 0;
   z-index: 2147483647;
   width: 250px;
   right: 15px;
   top: 35px;
-  text-align: left;
-  overflow: auto;
   max-height: calc(100% - 40px);
+  overflow: auto;
 
   &::-webkit-scrollbar {
     display: none;
     width: 0px;
-  }
-
-  .transit-list-inner {
-    list-style: none;
-    margin: 0;
-    padding: 0;
   }
 }
 </style>

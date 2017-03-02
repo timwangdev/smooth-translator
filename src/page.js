@@ -6,10 +6,10 @@ import ResultList from './components/ResultList.vue';
 let app = null;
 
 function getApp() {
-  if ($('#cgt-list').length == 0) {
-    $('<div id="cgt-list"></div>').appendTo('body');
+  if ($('#cst-list').length == 0) {
+    $('<div id="cst-list"></div>').appendTo('body');
     app = new Vue({
-      el: '#cgt-list',
+      el: '#cst-list',
       render: h => h(ResultList),
     });
   }
