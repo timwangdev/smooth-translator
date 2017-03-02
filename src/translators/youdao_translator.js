@@ -12,19 +12,21 @@ export default class YoudaoTranslator extends BaseTranslator {
 
   parseWord(page) {
     const $result = $(this.sanitizeHTML(page)).find('#ec_contentWrp');
-    const response = {};
+    const result = { status: 'failure' };
 
     if ($result.length) {
       const $phonetic = $result.find('.phonetic');
       if ($phonetic.length) {
-        response.phonetic = $phonetic.last().text();
+        result.phonetic = $phonetic.last().text();
       }
 
       const $means = $result.find('ul li').toArray();
-      response.translation = $means.map(node => node.innerText).join('<br/>');
+      result.translation = $means.map(node => node.innerText).join('<br/>');
+
+      result.status = 'success';
     }
 
-    return response;
+    return result;
   }
 
   parseText(page) {
@@ -32,7 +34,7 @@ export default class YoudaoTranslator extends BaseTranslator {
     const $means = $result.find('#translateResult li').toArray();
     const translation = $means.map(item => item.innerText).join('<br/><br/>');
 
-    return { translation };
+    return { translation, status: 'success' };
   }
 
   requestWord(text, callback) {
@@ -46,7 +48,7 @@ export default class YoudaoTranslator extends BaseTranslator {
 
     $.ajax(settings)
       .done(page => callback(this.parseWord(page)))
-      .fail(() => callback({}));
+      .fail(() => callback({ status: 'failure' }));
   }
 
   requestText(text, callback) {
@@ -66,7 +68,7 @@ export default class YoudaoTranslator extends BaseTranslator {
 
     $.ajax(settings)
       .done(data => callback(this.parseText(data)))
-      .fail(() => callback(null));
+      .fail(() => callback({ status: 'failure' }));
   }
 
   translate(text, callback) {

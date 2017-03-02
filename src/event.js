@@ -84,7 +84,7 @@ function selectionHandler(message, sender, sendResponse) {
 
 dispatchMessage({
   translate: translateHandler,
-  // selection: selectionHandler,
+  selection: selectionHandler,
 });
 
 // Register command for quick link inspect switch

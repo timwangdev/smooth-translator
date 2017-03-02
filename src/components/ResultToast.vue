@@ -10,6 +10,17 @@ import Result from './Result.vue';
 
 export default {
   props: ['result'],
+  created() {
+    this.translate();
+  },
+  methods: {
+    translate() {
+      const message = { type: 'translate', text: this.result.text };
+      chrome.runtime.sendMessage(message, (result) => {
+        this.result = Object.assign(this.result, result);
+      });
+    }
+  },
   components: {
     Result,
   },
