@@ -8,7 +8,7 @@ function selectionHandler(evt) {
   if (text) {
     chrome.runtime.sendMessage({
       type: 'selection',
-      text: text,
+      text: text
     });
   }
 }

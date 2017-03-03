@@ -13,14 +13,26 @@ import Result from './Result.vue';
 
 export default {
   props: ['result'],
+  data() {
+    return {
+      timer: null
+    };
+  },
   created() {
     this.translate();
   },
   methods: {
     translate() {
-      const message = { type: 'translate', text: this.result.text };
+      const message = {
+        type: 'translate',
+        text: this.result.text,
+        from: 'page'
+      };
       chrome.runtime.sendMessage(message, (result) => {
         this.result = Object.assign(this.result, result);
+        this.timer = setTimeout(() => {
+          this.result.show = false;
+        }, this.result.timeout * 1000);
       });
     },
     hide() {
@@ -52,7 +64,6 @@ export default {
   border-radius: 5px;
   box-shadow: 3px 3px 3px #000000;
   opacity: 0.9;
-  transition: top 1s;
 
   a.close {
     float: right;

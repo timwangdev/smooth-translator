@@ -50,7 +50,7 @@ export default {
   },
   computed: {
     status() {
-      return this.result.translation ? 'success' : 'error';
+      return this.result.translation ? 'success' : 'failure';
     },
     translation() {
       return this.result.translation || '未找到释义';
@@ -82,7 +82,11 @@ export default {
       this.updateOption('siteRules', this.options.siteRules);
     },
     translate: _.debounce(function() {
-      const message = { type: 'translate', text: this.source };
+      const message = {
+        type: 'translate',
+        text: this.source,
+        from: 'popup'
+      };
 
       this.loading = true;
       chrome.runtime.sendMessage(message, (result) => {
