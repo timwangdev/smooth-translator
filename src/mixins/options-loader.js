@@ -1,4 +1,4 @@
-import chromeStorage from 'chrome-storage-wrapper';
+import storage from 'chrome-storage-wrapper';
 import defaults from '../defaults';
 
 export default {
@@ -7,13 +7,13 @@ export default {
       options: Object.assign({}, defaults),
     };
   },
-  created() {
-    chromeStorage.getAll().then(options => (this.options = options));
-  },
   methods: {
+    loadOptions() {
+      return storage.getAll().then(options => this.options = options);
+    },
     updateOption(name, value) {
       this.options[name] = value;
-      chromeStorage.set(name, value);
+      storage.set(name, value);
     },
   },
 };

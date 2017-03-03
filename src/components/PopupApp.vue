@@ -1,6 +1,6 @@
 <template>
-  <div id="app">
-		<loader v-if="loading" />
+  <div id="app" v-cloak>
+    <loader v-if="loading" />
     <div class="translator">
       <textarea
         placeholder="输入文字进行翻译 ..."
@@ -13,15 +13,15 @@
         <div class="translation" v-html="translation"></div>
       </div>
 
-			<footer>
-				<a href="#" title="偏好设定" class="btn-settings" @click="settings">
-					<icon name="settings" :w="14" :h="14" />
-				</a>
-				<label :class="{ enabled: currentRule.enabled }">
-					<input type="checkbox" v-model="currentRule.enabled" @change="saveRule" />
-					在当前网站启用划词翻译
-				</label>
-			</footer>
+      <footer>
+        <a href="#" title="偏好设定" class="btn-settings" @click="settings">
+          <icon name="settings" :w="14" :h="14" />
+        </a>
+        <label :class="{ enabled: rule.enabled }" v-if="rule">
+          <input type="checkbox" v-model="rule.enabled" @change="saveRule" />
+          在当前网站启用划词翻译
+        </label>
+      </footer>
     </div>
   </div>
 </template>
@@ -33,7 +33,7 @@ import OptionsLoader from '../mixins/options-loader';
 import Loader from './Loader.vue';
 import { openExtensionPage } from '../utils';
 import { getActiveTab } from '../helpers/tabs';
-import { findRule } from '../helpers/rules';
+import { findRule, saveRule } from '../helpers/rules';
 
 export default {
   mixins: [OptionsLoader],
@@ -41,12 +41,14 @@ export default {
     return {
       source: '',
       result: null,
-      domain: '*',
       loading: false,
+      rule: null
     };
   },
   created() {
-    getActiveTab(tab => this.domain = tab.hostname);
+    this.loadOptions().then(() => {
+      getActiveTab(tab => this.initRule(tab.hostname));
+    })
   },
   computed: {
     status() {
@@ -54,12 +56,20 @@ export default {
     },
     translation() {
       return this.result.translation || '未找到释义';
-    },
-    currentRule() {
-      return findRule(this.options.siteRules, this.domain);
-    },
+    }
   },
   methods: {
+    findRule(site) {
+      return findRule(this.options.siteRules, site);
+    },
+    initRule(site) {
+      this.rule = this.findRule(site);
+
+      if (this.rule == null) {
+        const enabled = this.findRule('*').enabled;
+        this.rule = { site, enabled };
+      }
+    },
     escape() {
       if (this.source) {
         this.reset();
@@ -75,11 +85,11 @@ export default {
       window.close();
     },
     settings() {
-    	openExtensionPage('options.html');
-    	this.exit();
+      openExtensionPage('options.html');
+      this.exit();
     },
     saveRule() {
-      this.updateOption('siteRules', this.options.siteRules);
+      saveRule(this.rule);
     },
     translate: _.debounce(function() {
       const message = {
@@ -90,8 +100,8 @@ export default {
 
       this.loading = true;
       chrome.runtime.sendMessage(message, (result) => {
-      	this.result = result
-      	this.loading = false;
+        this.result = result
+        this.loading = false;
       });
     }, 300),
   },
@@ -105,8 +115,8 @@ export default {
     },
   },
   components: {
-  	Loader,
-	},
+    Loader,
+  },
 };
 </script>
 
@@ -118,6 +128,10 @@ body {
   font-size: 14px;
   line-height: 20px;
   color: #555;
+}
+
+[v-cloak] {
+  display: none;
 }
 
 textarea {
@@ -173,10 +187,10 @@ label {
 }
 
 .btn-settings {
-	float: right;
+  float: right;
 
-	.icon {
-		vertical-align: middle;
-	}
+  .icon {
+    vertical-align: middle;
+  }
 }
 </style>

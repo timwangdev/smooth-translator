@@ -77,6 +77,9 @@ export default {
       title: 'hello',
     };
   },
+  created() {
+    this.loadOptions();
+  },
   computed: {
     translatorOptions() {
       return RADIO_OPTIONS.translator;
