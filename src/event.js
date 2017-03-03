@@ -68,18 +68,21 @@ function translateHandler(message, sender, sendResponse) {
 // Save current selection to localStorage
 function selectionHandler(message, sender, sendResponse) {
   localStorage.setItem('selection', message.text);
-  getActiveTab(tab => {
-    chromeStorage.get('siteRules')
-      .then(options => findRule(options.siteRules, tab.hostname))
-      .then(rule => {
-        if (rule.enabled) {
-          chrome.tabs.sendMessage(sender.tab.id, {
-            type: 'translate',
-            text: message.text,
-          });
-        }
-      });
-  });
+
+  if (/^[a-z]+(\'|\'s)?$/.test(message.text)) {
+    getActiveTab(tab => {
+      chromeStorage.get('siteRules')
+        .then(options => findRule(options.siteRules, tab.hostname))
+        .then(rule => {
+          if (rule.enabled) {
+            chrome.tabs.sendMessage(sender.tab.id, {
+              type: 'translate',
+              text: message.text,
+            });
+          }
+        });
+    });  
+  }
 }
 
 dispatchMessage({
