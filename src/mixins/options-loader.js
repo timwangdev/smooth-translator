@@ -1,5 +1,7 @@
+import _ from 'lodash';
 import storage from 'chrome-storage-wrapper';
 import defaults from '../defaults';
+import { findRule } from '../helpers/rules';
 
 export default {
   data() {
@@ -8,6 +10,10 @@ export default {
     };
   },
   methods: {
+    initOptions() {
+      storage.addChangeListener(() => this.loadOptions());
+      return this.loadOptions();
+    },
     loadOptions() {
       return storage.getAll().then(options => this.options = options);
     },
@@ -15,5 +21,22 @@ export default {
       this.options[name] = value;
       storage.set(name, value);
     },
+    findRule(site) {
+      return findRule(this.options.siteRules, site);
+    },
+    saveRule(newRule) {
+      const rule = this.findRule(newRule.site);
+      if (rule == null) {
+        this.options.siteRules.push(newRule);
+      } else {
+        rule.enabled = newRule.enabled;
+      }
+
+      this.updateOption('siteRules', this.options.siteRules);
+    },
+    removeRule(rule) {
+      _.remove(this.options.siteRules, { site: rule.site });
+      this.updateOption('siteRules', this.options.siteRules);
+    }
   },
 };

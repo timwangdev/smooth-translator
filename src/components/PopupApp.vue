@@ -18,7 +18,9 @@
           <icon name="settings" :w="14" :h="14" />
         </a>
         <label :class="{ enabled: rule.enabled }" v-if="rule">
-          <input type="checkbox" v-model="rule.enabled" @change="saveRule" />
+          <input type="checkbox"
+                 v-model="rule.enabled"
+                 @change="saveRule(rule)" />
           在当前网站启用划词翻译
         </label>
       </footer>
@@ -33,7 +35,6 @@ import OptionsLoader from '../mixins/options-loader';
 import Loader from './Loader.vue';
 import { openExtensionPage } from '../utils';
 import { getActiveTab } from '../helpers/tabs';
-import { findRule, saveRule } from '../helpers/rules';
 
 export default {
   mixins: [OptionsLoader],
@@ -46,9 +47,9 @@ export default {
     };
   },
   created() {
-    this.loadOptions().then(() => {
+    this.initOptions().then(() => {
       getActiveTab(tab => this.initRule(tab.hostname));
-    })
+    });
   },
   computed: {
     status() {
@@ -59,9 +60,6 @@ export default {
     }
   },
   methods: {
-    findRule(site) {
-      return findRule(this.options.siteRules, site);
-    },
     initRule(site) {
       this.rule = this.findRule(site);
 
@@ -87,9 +85,6 @@ export default {
     settings() {
       openExtensionPage('options.html');
       this.exit();
-    },
-    saveRule() {
-      saveRule(this.rule);
     },
     translate: _.debounce(function() {
       const message = {

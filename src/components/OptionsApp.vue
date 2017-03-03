@@ -33,7 +33,8 @@
         <form-group label="启用/禁用页面划词翻译">
           <rule-list
             :rules="options.siteRules"
-            @change="updateOption('siteRules', $event)" />
+            @update="saveRule"
+            @remove="removeRule" />
         </form-group>
         <!-- <div class="form-group">
           <label class="control-label">启用页面划词</label>
@@ -78,7 +79,7 @@ export default {
     };
   },
   created() {
-    this.loadOptions();
+    this.initOptions();
   },
   computed: {
     translatorOptions() {
