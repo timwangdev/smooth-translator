@@ -7,7 +7,7 @@
           <icon name="settings" :w="14" :h="14" />
         </a>
 
-        <h1>Smooth</h1>
+				<img class="logo" :src="translatorLogoUrl" :title="options.translator" @click="nextTranslator" />
       </header>
 
       <section class="input-box">
@@ -29,7 +29,7 @@
           <input type="checkbox"
                  v-model="rule.enabled"
                  @change="saveRule(rule)" />
-          在当前网站启用划词翻译
+          在 <span class="site" :title="rule.site">{{ rule.site }}</span> 启用划词翻译
         </label>
       </footer>
     </div>
@@ -64,6 +64,9 @@ export default {
     status() {
       return this.result.translation ? 'success' : 'failure';
     },
+    translatorLogoUrl() {
+    	return require(`../img/translators/${this.options.translator}.png`);
+    },
     translation() {
       return this.result.translation || '未找到释义';
     }
@@ -97,6 +100,11 @@ export default {
     settings() {
       openExtensionPage('options.html');
       this.exit();
+    },
+    nextTranslator() {
+    	const translators = ['baidu', 'youdao', 'bing'];
+    	const index = _.indexOf(translators, this.options.translator) + 1;
+    	this.updateOption('translator', translators[index % translators.length]);
     },
     translate: _.debounce(function() {
       const message = {
@@ -146,10 +154,32 @@ body {
     line-height: 30px;
     padding: 0 8px;
 
-    h1 {
-      font-size: 14px;
-      margin: 0;
-    }
+    .logo {
+    	height: 18px;
+    	vertical-align: middle;
+		}
+
+    .btn-translator {
+			width: 29px;
+			height: 16px;
+			margin-right: 69px;
+			background-size: 16px 16px;
+			background-repeat: no-repeat;
+			background-position: center center;
+
+			&.translator-youdao {
+				background-size: 29px 16px;
+				background-image: url(../img/translators/youdao.png);
+			}
+
+			&.translator-baidu {
+				background-image: url(../img/translators/baidu.png);
+			}
+
+			&.translator-bing {
+				background-image: url(../img/translators/bing.png);
+			}
+		} 
 
     .btn-settings {
       float: right;
@@ -189,6 +219,18 @@ body {
     height: 24px;
     line-height: 24px;
     padding: 0 8px;
+
+    .site {
+      font-style: italic;
+      font-weight: bold;
+      font-size: .9em;
+      display: inline-block;
+      vertical-align: bottom;
+      max-width: 50px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
   }
 }
 

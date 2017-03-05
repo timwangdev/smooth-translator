@@ -28,7 +28,7 @@ module.exports = {
     new CopyWebpackPlugin([
       { context: './src', from: '*.html' },
       { context: './src', from: 'manifest.json' },
-      { context: './src/img', from: 'icon*.png' },
+      { context: './src', from: 'icon*.png' },
     ])
   ],
   vue: {
