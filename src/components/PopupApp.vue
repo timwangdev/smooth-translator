@@ -2,11 +2,22 @@
   <div id="app" v-cloak>
     <loader v-if="loading" />
     <div class="translator">
-      <textarea
-        placeholder="输入文字进行翻译 ..."
-        v-model.trim="source"
-        @keydown.esc.prevent.stop="escape"
-        @keydown.enter="translate"></textarea>
+      <header>
+        <a href="#" title="偏好设定" class="btn-settings" @click="settings">
+          <icon name="settings" :w="14" :h="14" />
+        </a>
+
+        <h1>Smooth</h1>
+      </header>
+
+      <section class="input-box">
+        <textarea
+          placeholder="输入文字进行翻译 ..."
+          ref="source"
+          v-model.trim="source"
+          @keydown.esc.prevent.stop="escape"
+          @keydown.enter="translate"></textarea>
+      </section>
 
       <div class="result" :class="status" v-if="result">
         <pre class="phonetic" v-if="result.phonetic">{{ result.phonetic }}</pre>
@@ -14,9 +25,6 @@
       </div>
 
       <footer>
-        <a href="#" title="偏好设定" class="btn-settings" @click="settings">
-          <icon name="settings" :w="14" :h="14" />
-        </a>
         <label :class="{ enabled: rule.enabled }" v-if="rule">
           <input type="checkbox"
                  v-model="rule.enabled"
@@ -50,6 +58,7 @@ export default {
     this.initOptions().then(() => {
       getActiveTab(tab => this.initRule(tab.hostname));
     });
+    setTimeout(this.focus, 200);
   },
   computed: {
     status() {
@@ -67,6 +76,9 @@ export default {
         const enabled = this.findRule('*').enabled;
         this.rule = { site, enabled };
       }
+    },
+    focus() {
+      this.$nextTick(() => this.$refs.source.focus());
     },
     escape() {
       if (this.source) {
@@ -117,37 +129,70 @@ export default {
 
 <style lang="scss">
 body {
-  width: 216px;
+  width: 240px;
   margin: 0;
-  padding: 7px;
   font-size: 14px;
-  line-height: 20px;
   color: #555;
+  background-color: #F2F5F6;
 }
 
 [v-cloak] {
   display: none;
 }
 
-textarea {
-  -webkit-appearance: textfield;
-  border: 1px inset #e0e0e0;
-  background-color: #fefbf5;
-  resize: none;
-  font-size: 14px;
-  line-height: 20px;
-  color: #555;
-  width: 100%;
-  max-height: 80px;
-  margin: 0 0 2px 0;
-  padding: 2px 4px;
-  font-weight: bold;
-  box-sizing: border-box;
+.translator {
+  header {
+    height: 30px;
+    line-height: 30px;
+    padding: 0 8px;
 
-  &:active, &:focus {
-    outline: -webkit-focus-ring-color auto 3px;
+    h1 {
+      font-size: 14px;
+      margin: 0;
+    }
+
+    .btn-settings {
+      float: right;
+
+      .icon {
+        vertical-align: middle;
+      }
+    }
+  }
+
+  .input-box {
+    padding: 0 8px;
+    margin: 0;
+    max-height: 80px;
+
+    textarea {
+      -webkit-appearance: textfield;
+      border: 1px inset #e0e0e0;
+      background-color: #fefbf5;
+      resize: none;
+      font-size: 12px;
+      line-height: 20px;
+      color: #888;
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      font-weight: bold;
+      box-sizing: border-box;
+
+      &:active, &:focus {
+        outline: -webkit-focus-ring-color auto 3px;
+      }
+    }
+  }
+
+  footer {
+    height: 24px;
+    line-height: 24px;
+    padding: 0 8px;
   }
 }
+
+
 
 .result {
   max-height: 200px;
@@ -181,11 +226,4 @@ label {
   }
 }
 
-.btn-settings {
-  float: right;
-
-  .icon {
-    vertical-align: middle;
-  }
-}
 </style>
