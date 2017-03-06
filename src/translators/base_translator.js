@@ -6,4 +6,8 @@ export default class BaseTranslator {
                    .replace(/<img([\s\S]*?)>/img, '')
                    .replace(/<video([\s\S]*?)>/img, '');
   }
+
+  get failure() {
+    return { status: 'failure' };
+  }
 }

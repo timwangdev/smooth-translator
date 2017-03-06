@@ -60,8 +60,7 @@ chrome.runtime.onInstalled.addListener(() => {
 
 function translateHandler(message, sender, sendResponse) {
   chromeStorage.get(['translator', 'notifyTimeout']).then(options => {
-    // FIXME: use selected translator
-    const translator = translators['youdao'];
+    const translator = translators[options.translator];
     translator.translate(message.text, (result) => {
       if (message.from == 'page') {
         result.timeout = options.notifyTimeout;

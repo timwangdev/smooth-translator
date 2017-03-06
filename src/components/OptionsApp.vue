@@ -16,14 +16,6 @@
             @change="updateOption('translator', $event)" />
         </form-group>
 
-        <form-group label="划词翻译结果显示位置">
-          <radios-group
-            name="notifyMode"
-            :value="options.notifyMode"
-            :options="notifyModeOptions"
-            @change="updateOption('notifyMode', $event)" />
-        </form-group>
-
         <form-group label="划词翻译结果显示时长" >
           <slider min="3" max="10"
             :value="options.notifyTimeout"
@@ -36,14 +28,8 @@
             @update="saveRule"
             @remove="removeRule" />
         </form-group>
-        <!-- <div class="form-group">
-          <label class="control-label">启用页面划词</label>
-          <div class="controls">
-            <label class="radio-inline"><input type="radio" name="pageInspect" ng-model="options.pageInspect" ng-value="true" />启用</label>
-            <label class="radio-inline"><input type="radio" name="pageInspect" ng-model="options.pageInspect" ng-value="false" /> 停用</label>
-          </div>
-        </div>
 
+<!--
         <div class="form-group">
           <label class="control-label">启用链接划词</label>
           <div class="controls">

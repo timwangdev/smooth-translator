@@ -2,10 +2,11 @@
  * Bing Translator
  */
 import $ from 'jquery';
+import _ from 'lodash';
 import BaseTranslator from './base_translator';
 
 const DICT_URL = 'http://cn.bing.com/dict/search';
-const TRANSLATE_URL = 'http://cn.bing.com/translator/api/Translate/TranslateArray?from=-&to=zh-CHS';
+const TRANSLATE_URL = 'http://www.bing.com/translator/api/Translate/TranslateArray?from=en&to=zh-CHS';
 
 export default class BingTranslator extends BaseTranslator {
   get name() {
@@ -27,24 +28,22 @@ export default class BingTranslator extends BaseTranslator {
   }
 
   parseWord(page) {
-    var $result = $(sanitizeHTML(page));
-    let response = null;
+    const $result = $(this.sanitizeHTML(page));
+    const response = this.failure;
 
     if ($result.find('.qdef').length) {
-      response = {};
-
-      var $phonetic = $result.find('.hd_prUS');
+      const $phonetic = $result.find('.hd_prUS');
       if ($phonetic.length) {
         response.phonetic = $phonetic.text().replace('美 ', '');
       }
       
-      var $means = $result.find('.hd_area + ul > li');
-      response.translation =
-        $means.map(this._parseMean).toArray().join('<br/>');
+      const $means = $result.find('.hd_area + ul > li');
+      response.translation = $means.map(this.parseMean).toArray().join('<br/>');
 
-      return response;
+      response.status = 'success';
     } else if ($result.find('.p1-11')) {
-      response = { translation: $result.find('.p1-11').text() };
+      response.translation = $$result.find('.p1-11').text();
+      response.status = 'success';
     }
 
     return response;
@@ -53,7 +52,7 @@ export default class BingTranslator extends BaseTranslator {
   parseText(data) {
     const translation = data.items.map(item => item.text).join('<br/><br/>');
 
-    return { translation: translation };
+    return { translation: translation, status: 'success' };
   }
 
   requestWord(text, callback) {
@@ -66,18 +65,14 @@ export default class BingTranslator extends BaseTranslator {
     };
 
     $.ajax(settings)
-      .done(page => callback(this._parseWord(page)))
-      .fail(() => callback(null));
+      .done(page => callback(this.parseWord(page)))
+      .fail(() => callback(this.failure));
   }
 
   buildLine(text, index) {
-    console.log(text, index);
-    const timestamp = new Date().getTime();
+    const id = new Date().getTime() + index;
     
-    return {
-      id: timestamp + index,
-      text,
-    };
+    return { id, text };
   }
 
   splitLines(text) {
@@ -98,7 +93,7 @@ export default class BingTranslator extends BaseTranslator {
 
     $.ajax(settings)
       .done(data => callback(this.parseText(data)))
-      .fail(() => callback(null));
+      .fail(() => callback(this.failure));
   }
 
   translate(text, callback) {
