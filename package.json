@@ -1,5 +1,5 @@
 {
-  "name": "focus-dict",
+  "name": "smooth-translator",
   "devDependencies": {
     "babel-core": "^6.21.0",
     "babel-loader": "^6.2.10",
