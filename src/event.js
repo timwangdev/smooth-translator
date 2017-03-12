@@ -1,11 +1,11 @@
 // import translators from './translators';
 // import app from './config/application';
 import merge from 'deepmerge';
-import chromeStorage from 'chrome-storage-wrapper';
+import storage from 'chrome-storage-wrapper';
 import { dispatchMessage } from './helpers/message';
 import { getActiveTab } from './helpers/tabs';
 import { findRule } from './helpers/rules';
-import translators from './translators';
+import translate from './translate';
 import defaults from './defaults';
 
 // Key name to store current text in local storage
@@ -44,31 +44,23 @@ import defaults from './defaults';
 //   }
 // }
 
-// app.registerMessageDispatcher({
-//   translate: translateHanlder,
-//   selection: selectionHandler,
-//   currentText: currentTextHandler,
-//   linkInspect: linkInspectHandler
-// });
-
 // Register options defaults on extension install/reinstall
 chrome.runtime.onInstalled.addListener(() => {
-  chromeStorage.getAll()
+  storage.getAll()
     .then(options => merge(defaults, options))
-    .then(options => chromeStorage.set(options));
-});
+    .then(options => storage.set(options))
+})
 
 function translateHandler(message, sender, sendResponse) {
-  chromeStorage.get(['translator', 'notifyTimeout']).then(options => {
-    const translator = translators[options.translator];
-    translator.translate(message.text, (result) => {
+  storage.get('notifyTimeout').then(options => {
+    translate(message.text, (result) => {
       if (message.from == 'page') {
-        result.timeout = options.notifyTimeout;
+        result.timeout = options.notifyTimeout
       }
 
-      sendResponse(result);
-    });
-  });
+      sendResponse(result)
+    })
+  })
 }
 
 // Save current selection to localStorage
@@ -77,7 +69,7 @@ function selectionHandler(message, sender, sendResponse) {
 
   if (/^[a-z]+(\'|\'s)?$/.test(message.text)) {
     getActiveTab(tab => {
-      chromeStorage.get('siteRules')
+      storage.get('siteRules')
         .then(options => findRule(options.siteRules, tab.hostname, '*'))
         .then(rule => {
           if (rule.enabled) {
@@ -87,7 +79,7 @@ function selectionHandler(message, sender, sendResponse) {
             });
           }
         });
-    });  
+    });
   }
 }
 

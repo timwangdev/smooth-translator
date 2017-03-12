@@ -8,14 +8,6 @@
 
     <div class="board-content">
       <form class="form-horizontal" role="form">
-        <form-group label="翻译服务">
-          <radios-group
-            name="translator"
-            :value="options.translator"
-            :options="translatorOptions"
-            @change="updateOption('translator', $event)" />
-        </form-group>
-
         <form-group label="划词翻译结果显示时长" >
           <slider min="3" max="10"
             :value="options.notifyTimeout"
@@ -50,8 +42,6 @@
 </template>
 
 <script>
-import RADIO_OPTIONS from '../variables';
-import RadiosGroup from './RadiosGroup.vue';
 import Slider from './Slider.vue';
 import RuleList from './RuleList.vue';
 import FormGroup from './FormGroup.vue';
@@ -67,17 +57,8 @@ export default {
   created() {
     this.initOptions();
   },
-  computed: {
-    translatorOptions() {
-      return RADIO_OPTIONS.translator;
-    },
-    notifyModeOptions() {
-      return RADIO_OPTIONS.notifyMode;
-    },
-  },
   components: {
     FormGroup,
-    RadiosGroup,
     Slider,
     RuleList,
   },

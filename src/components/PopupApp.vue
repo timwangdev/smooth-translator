@@ -7,7 +7,7 @@
           <icon name="settings" :w="14" :h="14" />
         </a>
 
-				<img class="logo" :src="translatorLogoUrl" :title="options.translator" @click="nextTranslator" />
+				<span class="app-name">Smooth Translator</span>
       </header>
 
       <section class="input-box">
@@ -62,13 +62,10 @@ export default {
   },
   computed: {
     status() {
-      return this.result.translation ? 'success' : 'failure';
-    },
-    translatorLogoUrl() {
-    	return require(`../img/translators/${this.options.translator}.png`);
+      return this.result.translation ? 'success' : 'failure'
     },
     translation() {
-      return this.result.translation || '未找到释义';
+      return this.result.translation || '未找到释义'
     }
   },
   methods: {
@@ -100,11 +97,6 @@ export default {
     settings() {
       openExtensionPage('options.html');
       this.exit();
-    },
-    nextTranslator() {
-    	const translators = ['baidu', 'youdao', 'bing'];
-    	const index = _.indexOf(translators, this.options.translator) + 1;
-    	this.updateOption('translator', translators[index % translators.length]);
     },
     translate: _.debounce(function() {
       const message = {
@@ -154,32 +146,11 @@ body {
     line-height: 30px;
     padding: 0 8px;
 
-    .logo {
-    	height: 18px;
-    	vertical-align: middle;
-		}
-
-    .btn-translator {
-			width: 29px;
-			height: 16px;
-			margin-right: 69px;
-			background-size: 16px 16px;
-			background-repeat: no-repeat;
-			background-position: center center;
-
-			&.translator-youdao {
-				background-size: 29px 16px;
-				background-image: url(../img/translators/youdao.png);
-			}
-
-			&.translator-baidu {
-				background-image: url(../img/translators/baidu.png);
-			}
-
-			&.translator-bing {
-				background-image: url(../img/translators/bing.png);
-			}
-		} 
+    .app-name {
+      color: #888;
+      font-size: 13px;
+      font-weight: bold;
+    }
 
     .btn-settings {
       float: right;

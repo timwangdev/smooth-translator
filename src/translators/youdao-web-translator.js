@@ -3,16 +3,12 @@
  */
 
 import $ from 'jquery';
-import BaseTranslator from './base_translator';
+import BaseTranslator from './base-translator';
 
-export default class YoudaoTranslator extends BaseTranslator {
-  get name() {
-    return 'youdao';
-  }
-
+export default class YoudaoWebTranslator extends BaseTranslator {
   parseWord(page) {
     const $result = $(this.sanitizeHTML(page)).find('#ec_contentWrp');
-    const result = { status: 'failure' };
+    const result = this.failure;
 
     if ($result.length) {
       const $phonetic = $result.find('.phonetic');
@@ -48,7 +44,7 @@ export default class YoudaoTranslator extends BaseTranslator {
 
     $.ajax(settings)
       .done(page => callback(this.parseWord(page)))
-      .fail(() => callback({ status: 'failure' }));
+      .fail(() => callback(this.failure));
   }
 
   requestText(text, callback) {
@@ -68,16 +64,6 @@ export default class YoudaoTranslator extends BaseTranslator {
 
     $.ajax(settings)
       .done(data => callback(this.parseText(data)))
-      .fail(() => callback({ status: 'failure' }));
-  }
-
-  translate(text, callback) {
-    if (/^\s*$/.test(text)) {
-      callback({});
-    } else if (/^[a-zA-Z]+$/.test(text)) {
-      this.requestWord(text, callback);
-    } else {
-      this.requestText(text, callback);
-    }
+      .fail(() => callback(this.failure));
   }
 }
