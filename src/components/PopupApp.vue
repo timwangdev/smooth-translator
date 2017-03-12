@@ -4,17 +4,16 @@
     <div class="translator">
       <section class="input-box">
         <textarea
+          autofocus
           placeholder="输入文字进行翻译 ..."
+          rows="3"
           ref="source"
           v-model.trim="source"
           @keydown.esc.prevent.stop="escape"
           @keydown.enter="translate"></textarea>
       </section>
 
-      <div class="result" :class="status" v-if="result">
-        <pre class="phonetic" v-if="result.phonetic">{{ result.phonetic }}</pre>
-        <div class="translation" v-html="translation"></div>
-      </div>
+      <result :result="result" theme="light" v-if="result"></result>
 
       <footer>
         <a href="#" title="偏好设定" class="btn-settings" @click="settings">
@@ -33,12 +32,13 @@
 </template>
 
 <script>
-import _ from 'lodash';
-import URL from 'url-parse';
-import OptionsLoader from '../mixins/options-loader';
-import Loader from './Loader.vue';
-import { openExtensionPage } from '../utils';
-import { getActiveTab } from '../helpers/tabs';
+import _ from 'lodash'
+import URL from 'url-parse'
+import OptionsLoader from '../mixins/options-loader'
+import Loader from './Loader.vue'
+import Result from './Result.vue'
+import { openExtensionPage } from '../utils'
+import { getActiveTab } from '../helpers/tabs'
 
 export default {
   mixins: [OptionsLoader],
@@ -48,79 +48,80 @@ export default {
       result: null,
       loading: false,
       rule: null
-    };
+    }
   },
   created() {
     this.initOptions().then(() => {
-      getActiveTab(tab => this.initRule(tab.hostname));
-    });
-    setTimeout(this.focus, 200);
+      getActiveTab(tab => this.initRule(tab.hostname))
+    })
+    chrome.runtime.sendMessage({ type: 'current' }, current => {
+      this.source = current
+      setTimeout(this.focus, 300)
+    })
   },
   computed: {
-    status() {
-      return this.result.translation ? 'success' : 'failure'
-    },
     translation() {
       return this.result.translation || '未找到释义'
     }
   },
   methods: {
     initRule(site) {
-      this.rule = this.findRule(site);
+      this.rule = this.findRule(site)
 
       if (this.rule == null) {
-        const enabled = this.findRule('*').enabled;
-        this.rule = { site, enabled };
+        const enabled = this.findRule('*').enabled
+        this.rule = { site, enabled }
       }
     },
     focus() {
-      this.$nextTick(() => this.$refs.source.focus());
+      this.$nextTick(() => this.$refs.source.select())
     },
     escape() {
       if (this.source) {
-        this.reset();
+        this.reset()
       } else {
-        this.exit();
+        this.exit()
       }
     },
     reset() {
-      this.source = '';
-      this.result = null;
+      this.source = ''
+      this.result = null
     },
     exit() {
-      window.close();
+      window.close()
     },
     settings() {
-      openExtensionPage('options.html');
-      this.exit();
+      openExtensionPage('options.html')
+      this.exit()
     },
     translate: _.debounce(function() {
       const message = {
         type: 'translate',
         text: this.source,
         from: 'popup'
-      };
+      }
 
-      this.loading = true;
+      this.loading = true
       chrome.runtime.sendMessage(message, (result) => {
         this.result = result
-        this.loading = false;
-      });
+        this.loading = false
+      })
     }, 300),
   },
   watch: {
     source() {
       if (this.source) {
-        this.translate();
+        this.translate()
       } else {
-        this.reset();
+        this.reset()
       }
     },
   },
   components: {
     Loader,
+    Result
   },
-};
+}
 </script>
 
 <style lang="scss">
@@ -138,9 +139,7 @@ body {
 
 .translator {
   .input-box {
-    padding: 8px 8px 0 8px;
-    margin: 0;
-    max-height: 80px;
+    padding: 5px 5px 2px 5px;;
 
     textarea {
       -webkit-appearance: textfield;
@@ -148,16 +147,16 @@ body {
       background-color: #fefbf5;
       resize: none;
       font-size: 12px;
-      line-height: 20px;
+      line-height: 1.2em;
       color: #888;
       width: 100%;
-      height: 100%;
       margin: 0;
       font-weight: bold;
       box-sizing: border-box;
 
       &:active, &:focus {
-        outline: -webkit-focus-ring-color auto 3px;
+        outline: none;
+        background-color: #ffffd4;
       }
     }
   }
@@ -165,7 +164,7 @@ body {
   footer {
     height: 24px;
     line-height: 24px;
-    padding: 0 8px;
+    padding: 0 5px;
 
     .btn-settings {
       float: right;
@@ -189,30 +188,6 @@ body {
   }
 }
 
-
-
-.result {
-  max-height: 200px;
-  padding: 3px 6px;
-  overflow-y: auto;
-  white-space: pre-line;
-
-  &.success {
-    background: #efffef;
-    color: #2B3F29;
-  }
-
-  &.error {
-    background: #FFF8DC;
-    color: #888888;
-  }
-
-  .phonetic {
-    margin-top: 0;
-    margin-bottom: 5px;
-  }
-}
-
 label {
   font-size: 0.9em;
   color: gray;
@@ -220,6 +195,10 @@ label {
 
   &.enabled {
     color: green;
+  }
+
+  input[type="checkbox"] {
+    margin: 0;
   }
 }
 

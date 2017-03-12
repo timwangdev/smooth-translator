@@ -8,7 +8,10 @@ export default class BaseTranslator {
   }
 
   get failure() {
-    return { status: 'failure' }
+    return {
+      translation: '未找到释义',
+      status: 'failure'
+    }
   }
 
   translate(text, callback) {
