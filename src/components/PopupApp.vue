@@ -2,14 +2,6 @@
   <div id="app" v-cloak>
     <loader v-if="loading" />
     <div class="translator">
-      <header>
-        <a href="#" title="偏好设定" class="btn-settings" @click="settings">
-          <icon name="settings" :w="14" :h="14" />
-        </a>
-
-				<span class="app-name">Smooth Translator</span>
-      </header>
-
       <section class="input-box">
         <textarea
           placeholder="输入文字进行翻译 ..."
@@ -25,6 +17,10 @@
       </div>
 
       <footer>
+        <a href="#" title="偏好设定" class="btn-settings" @click="settings">
+          <icon name="settings" :w="14" :h="14" />
+        </a>
+
         <label :class="{ enabled: rule.enabled }" v-if="rule">
           <input type="checkbox"
                  v-model="rule.enabled"
@@ -141,28 +137,8 @@ body {
 }
 
 .translator {
-  header {
-    height: 30px;
-    line-height: 30px;
-    padding: 0 8px;
-
-    .app-name {
-      color: #888;
-      font-size: 13px;
-      font-weight: bold;
-    }
-
-    .btn-settings {
-      float: right;
-
-      .icon {
-        vertical-align: middle;
-      }
-    }
-  }
-
   .input-box {
-    padding: 0 8px;
+    padding: 8px 8px 0 8px;
     margin: 0;
     max-height: 80px;
 
@@ -190,6 +166,14 @@ body {
     height: 24px;
     line-height: 24px;
     padding: 0 8px;
+
+    .btn-settings {
+      float: right;
+
+      .icon {
+        vertical-align: middle;
+      }
+    }
 
     .site {
       font-style: italic;
