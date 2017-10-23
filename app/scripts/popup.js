@@ -1,4 +1,11 @@
-// Enable chromereload by uncommenting this line:
-// import 'chromereload/devonly'
+import 'chromereload/devonly'
+import Vue from 'vue'
+import Icon from 'vue-icon'
+import PopupApp from './components/PopupApp.vue'
 
-console.log(`'Allo 'Allo! Popup`)
+Vue.component('icon', Icon)
+
+new Vue({
+  el: '#app',
+  render: h => h(PopupApp),
+})

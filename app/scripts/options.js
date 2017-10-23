@@ -1,4 +1,8 @@
-// Enable chromereload by uncommenting this line:
-// import 'chromereload/devonly'
+import 'chromereload/devonly'
+import Vue from 'vue';
+import OptionsApp from './components/OptionsApp.vue';
 
-console.log(`'Allo 'Allo! Options`)
+new Vue({
+  el: '#app',
+  render: h => h(OptionsApp),
+});
