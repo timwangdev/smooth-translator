@@ -1,18 +1,18 @@
 {
   "manifest_version": 2,
 
-  "name": "TransIt",
-  "description": "让划词翻译更简单",
-  "version": "1.6.1",
+  "name": "穆译",
+  "description": "让划词翻译不干扰你阅读的状态",
+  "version": "0.1.0",
 
   "icons": {
-    "48": "img/icon48.png",
-    "128": "img/icon128.png"
+    "48": "icon48.png",
+    "128": "icon128.png"
   },
 
   "background": {
     "scripts": [
-      "js/event.js"
+      "event.js"
     ],
     "persistent": true
   },
@@ -20,20 +20,31 @@
   "options_page": "options.html",
 
   "browser_action": {
-    "default_icon": "img/icon48.png",
+    "default_icon": "icon48.png",
     "default_popup": "popup.html"
   },
 
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
-      "css": ["css/contentstyle.css"],
-      "js": [
-        "js/contentscript.js"
-      ],
+      "js": ["page.js"]
+    },
+    {
+      "matches": ["<all_urls>"],
+      "js": ["inspector.js"],
       "all_frames": true
     }
   ],
+
+  "commands": {
+    "toggle-link-inspect": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+L",
+        "mac": "MacCtrl+Shift+L"
+      },
+      "description": "打开/关闭链接划词模式"
+    }
+  },
 
   "permissions": [
     "tabs",

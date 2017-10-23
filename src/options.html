@@ -1,83 +1,12 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="TransitApp" ng-csp>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <title>偏好设定</title>
-  
-  <link rel="stylesheet" href="css/options.css" type="text/css" />
 </head>
-<body ng-controller="OptionsCtrl">
-  <div class="board">
+<body>
+  <div id="app"></div>
 
-    <div class="borad-header">
-      <strong class="title">
-        <img src="img/icon48.png" alt="TransIt Logo" /> 偏好设定
-      </strong>
-    </div>
-
-    <div class="board-content">
-
-      <form class="form-horizontal" role="form" ng-controller="OptionsCtrl">
-
-        <div class="form-group">
-          <label class="control-label">翻译服务</label>
-          <div class="controls">
-            <label class="radio-inline"><input type="radio" name="translator" ng-model="options.translator" value="youdao" /> 有道翻译</label>
-            <label class="radio-inline"><input type="radio" name="translator" ng-model="options.translator" value="baidu" /> 百度翻译</label>
-            <label class="radio-inline"><input type="radio" name="translator" ng-model="options.translator" value="bing" /> 必应翻译</label>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label class="control-label">启用页面划词</label>
-          <div class="controls">
-            <label class="radio-inline"><input type="radio" name="pageInspect" ng-model="options.pageInspect" ng-value="true" />启用</label>
-            <label class="radio-inline"><input type="radio" name="pageInspect" ng-model="options.pageInspect" ng-value="false" /> 停用</label>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label class="control-label">启用链接划词</label>
-          <div class="controls">
-            <label class="radio-inline"><input type="radio" name="linkInspect" ng-model="options.linkInspect" ng-value="true" />启用</label>
-            <label class="radio-inline"><input type="radio" name="linkInspect" ng-model="options.linkInspect" ng-value="false" /> 停用</label>
-
-            <div class="hint">
-              使用快捷键
-              <code>Ctrl + Shift + L</code>
-              启用/禁用链接划词模式。
-              划词结束或者点击页面任意一处，将自动恢复为禁用状态。
-            </div>
-          </div>
-        </div>
-
-        <div class="form-group notify-mode">
-          <label class="control-label">划词翻译结果显示位置</label>
-          <div class="controls">
-            <label class="radio-inline">
-              <input type="radio" name="notifyMode" ng-model="options.notifyMode" value="margin" /> 在窗口边缘显示
-            </label>
-            <label class="radio-inline">
-              <input type="radio" name="notifyMode" ng-model="options.notifyMode" value="in-place" /> 在选择的文本附近显示
-            </label>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label class="control-label">划词翻译结果显示时长</label>
-          <div class="controls" style="padding-top: 7px;">
-            <input type="range" min="3" max="10" step="1" ng-model="options.notifyTimeout" data-highlight="true" />
-            <span class="label label-info">{{ options.notifyTimeout }} 秒</span>
-          </div>
-
-        </div>
-
-      </form>
-
-    </div><!-- .board-content -->
-
-  </div><!-- .board -->
-
-  <script type="text/javascript" src="js/options.js"></script>
+  <script src="options.js"></script>
 </body>
 </html>
