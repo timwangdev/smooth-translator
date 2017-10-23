@@ -1,51 +1,60 @@
 {
+  "manifest_version": 2,
+  "default_locale": "zh-CN",
+
   "name": "__MSG_appName__",
   "short_name": "__MSG_appShortName__",
   "description": "__MSG_appDescription__",
-  "version": "0.0.0",
-  "manifest_version": 2,
-  "default_locale": "en",
+  "version": "0.1.0",
+
   "icons": {
-    "16": "images/icon-16.png",
+    "48": "images/icon-48.png",
     "128": "images/icon-128.png"
   },
+
   "background": {
     "scripts": [
       "scripts/background.js"
-    ]
+    ],
+    "persistent": true
   },
+
   "browser_action": {
-    "default_icon": {
-      "19": "images/icon-19.png",
-      "38": "images/icon-38.png"
-    },
+    "default_icon": "images/icon-48.png",
     "default_title": "__MSG_browserActionTitle__",
     "default_popup": "pages/popup.html"
   },
+
   "options_page": "pages/options.html",
-  "options_ui": {
-    "page": "pages/options.html",
-    "chrome_style": true
-  },
+
   "content_scripts": [
     {
-      "matches": [
-        "http://*/*",
-        "https://*/*"
-      ],
-      "css": [
-        "styles/contentscript.css"
-      ],
-      "js": [
-        "scripts/contentscript.js"
-      ],
-      "run_at": "document_end",
-      "all_frames": false
+      "matches": ["<all_urls>"],
+      "js": ["scripts/contentscript.js"]
+    },
+    {
+      "matches": ["<all_urls>"],
+      "js": ["scripts/inspector.js"],
+      "all_frames": true
     }
   ],
+
+  "commands": {
+    "toggle-link-inspect": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+L",
+        "mac": "MacCtrl+Shift+L"
+      },
+      "description": "打开/关闭链接划词模式"
+    }
+  },
+
   "permissions": [
-    "notifications",
     "tabs",
-    "<all_urls>"
-  ]
+    "storage",
+    "notifications",
+    "http://fanyi.youdao.com/openapi.do"
+  ],
+
+  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
 }
