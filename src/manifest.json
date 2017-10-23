@@ -1,9 +1,9 @@
 {
   "manifest_version": 2,
 
-  "name": "Smooth Translator",
-  "description": "让划词翻译更简单",
-  "version": "2.0.0",
+  "name": "穆译",
+  "description": "让划词翻译不干扰你阅读的状态",
+  "version": "0.1.0",
 
   "icons": {
     "48": "icon48.png",
