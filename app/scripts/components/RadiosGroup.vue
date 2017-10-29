@@ -21,10 +21,3 @@ export default {
   },
 };
 </script>
-
-<style lang="sass" scoped>
-.radio-inline {
-  display: inline-block;
-  margin-right: 5px;
-}
-</style>

@@ -1,5 +1,5 @@
 // import YoudaoApiTranslator from './translators/youdao-api-translator.js'
-import YoudaoWebTranslator from './translators/youdao-web-translator.js'
+import YoudaoWebTranslator from '../translators/youdao-web-translator.js'
 
 export default function translate(text, callback) {
   const translator = new YoudaoWebTranslator()

@@ -17,7 +17,8 @@
 
       <footer>
         <a href="#" title="偏好设定" class="btn-settings" @click="settings">
-          <icon name="settings" :w="14" :h="14" />
+
+          <!-- TODO: Settings ICON -->
         </a>
 
         <label :class="{ enabled: rule.enabled }" v-if="rule">
@@ -37,7 +38,7 @@ import URL from 'url-parse'
 import OptionsLoader from '../mixins/options-loader'
 import Loader from './Loader.vue'
 import Result from './Result.vue'
-import { openExtensionPage } from '../utils'
+import { openExtensionPage } from '../helpers/utils'
 import { getActiveTab } from '../helpers/tabs'
 
 export default {
@@ -123,83 +124,3 @@ export default {
   },
 }
 </script>
-
-<style lang="scss">
-body {
-  width: 240px;
-  margin: 0;
-  font-size: 14px;
-  color: #555;
-  background-color: #F2F5F6;
-}
-
-[v-cloak] {
-  display: none;
-}
-
-.translator {
-  .input-box {
-    padding: 5px 5px 2px 5px;;
-
-    textarea {
-      -webkit-appearance: textfield;
-      border: 1px inset #e0e0e0;
-      background-color: #fefbf5;
-      resize: none;
-      font-size: 12px;
-      line-height: 1.2em;
-      color: #888;
-      width: 100%;
-      margin: 0;
-      font-weight: bold;
-      box-sizing: border-box;
-
-      &:active, &:focus {
-        outline: none;
-        background-color: #ffffd4;
-      }
-    }
-  }
-
-  footer {
-    height: 24px;
-    line-height: 24px;
-    padding: 0 5px;
-
-    .btn-settings {
-      float: right;
-
-      .icon {
-        vertical-align: middle;
-      }
-    }
-
-    .site {
-      font-style: italic;
-      font-weight: bold;
-      font-size: .9em;
-      display: inline-block;
-      vertical-align: bottom;
-      max-width: 50px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-  }
-}
-
-label {
-  font-size: 0.9em;
-  color: gray;
-  user-select: none;
-
-  &.enabled {
-    color: green;
-  }
-
-  input[type="checkbox"] {
-    margin: 0;
-  }
-}
-
-</style>

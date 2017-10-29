@@ -8,6 +8,7 @@ import plumber from 'gulp-plumber'
 import livereload from 'gulp-livereload'
 import args from './lib/args'
 
+const path = require('path')
 const ENV = args.production ? 'production' : 'development'
 
 gulp.task('scripts', (cb) => {
@@ -29,10 +30,23 @@ gulp.task('scripts', (cb) => {
         new webpack.optimize.UglifyJsPlugin()
       ] : []),
       module: {
-        rules: [{
-          test: /\.js$/,
-          loader: 'babel-loader'
-        }]
+        rules: [
+          {
+            test: /\.js$/,
+            loader: 'babel-loader',
+          },
+          {
+            test: /\.vue$/,
+            loader: 'vue-loader',
+          },
+        ]
+      },
+      resolve: {
+        alias: {
+          helpers: path.resolve(__dirname, 'app/scripts/helpers/'),
+          mixins: path.resolve(__dirname, 'app/scripts/mixins/')
+        },
+        extensions: ['.js', '.json', '.vue']
       }
     },
     webpack,

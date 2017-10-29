@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import storage from 'chrome-storage-wrapper';
-import defaults from '../defaults';
+import defaults from '../config/defaults';
 import { findRule } from '../helpers/rules';
 
 export default {

@@ -7,8 +7,8 @@ import storage from 'chrome-storage-wrapper'
 import { dispatchMessage } from './helpers/message'
 import { getActiveTab } from './helpers/tabs'
 import { findRule } from './helpers/rules'
-import translate from './translate'
-import defaults from './defaults'
+import translate from './helpers/translate'
+import defaults from './config/defaults'
 
 // function linkInspectHandler(message, sender, sendResponse) {
 //   if (message.enabled) {

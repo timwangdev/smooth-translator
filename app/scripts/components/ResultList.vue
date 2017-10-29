@@ -3,6 +3,7 @@
     <result-toast
       v-for="result in results"
       :result="result"
+      :key="result.text"
       @close="removeResult(result.text)">
     </result-toast>
   </div><!-- .board -->
@@ -42,26 +43,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss">
-@import '../scss/reset';
-
-.cst-list {
-  @include reset;
-}
-
-#cst-list {
-  position: fixed;
-  z-index: 2147483647;
-  width: 250px;
-  right: 15px;
-  top: 35px;
-  max-height: calc(100% - 40px);
-  overflow: auto;
-
-  &::-webkit-scrollbar {
-    display: none;
-    width: 0px;
-  }
-}
-</style>
