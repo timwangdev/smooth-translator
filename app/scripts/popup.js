@@ -1,4 +1,3 @@
-import 'chromereload/devonly'
 import 'vue-awesome/icons/cog'
 
 import Vue from 'vue'

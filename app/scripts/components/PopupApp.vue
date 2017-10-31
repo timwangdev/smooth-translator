@@ -17,8 +17,7 @@
 
       <footer>
         <a href="#" title="偏好设定" class="btn-settings" @click="settings">
-
-          <!-- TODO: Settings ICON -->
+          <icon name="cog" />
         </a>
 
         <label :class="{ enabled: rule.enabled }" v-if="rule">
@@ -92,7 +91,7 @@ export default {
       window.close()
     },
     settings() {
-      openExtensionPage('options.html')
+      openExtensionPage('pages/options.html')
       this.exit()
     },
     translate: _.debounce(function() {
