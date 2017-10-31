@@ -38,6 +38,11 @@ gulp.task('scripts', (cb) => {
           {
             test: /\.vue$/,
             loader: 'vue-loader',
+            options: {
+              transformToRequire: {
+                image: 'xlink:href'
+              }
+            }
           },
         ]
       },

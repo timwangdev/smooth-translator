@@ -1,5 +1,5 @@
 <template>
-  <table>
+  <table class="table-rules">
     <thead>
       <tr>
         <th width="80%">网站</th>
@@ -30,27 +30,3 @@ export default {
   props: ['rules']
 };
 </script>
-
-<style lang="scss" scoped>
-table {
-  width: 100%;
-  border: 2px solid #ddd;
-
-  th, td {
-    padding: 5px 10px;
-    text-align: center;
-
-    &:first-child {
-      text-align: left;
-    }
-  }
-
-  th {
-    background-color: #ddd;
-  }
-
-  tbody tr:not(:first-child) td {
-    border-top: 1px solid #ddd;
-  }
-}
-</style>

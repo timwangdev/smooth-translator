@@ -1,4 +1,3 @@
-import 'chromereload/devonly'
 import Vue from 'vue';
 import OptionsApp from './components/OptionsApp.vue';
 

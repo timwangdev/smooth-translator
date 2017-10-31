@@ -2,7 +2,7 @@
   <div id="app" class="board">
     <div class="board-header">
       <strong class="title">
-        <img src="icon48.png" alt="Focus Dict Logo" /> 偏好设定{{ title }}
+        <img src="/images/icon-48.png" alt="Focus Dict Logo" /> 偏好设定{{ title }}
       </strong>
     </div>
 
