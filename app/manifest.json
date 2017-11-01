@@ -30,7 +30,8 @@
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
-      "js": ["scripts/page.js"]
+      "js": ["scripts/page.js"],
+      "css": ["styles/page.css"]
     },
     {
       "matches": ["<all_urls>"],

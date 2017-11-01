@@ -1,6 +1,6 @@
 <template>
   <transition name="fade" @after-leave="close">
-    <div class="result-toast" v-if="result.show">
+    <div class="cst-result-toast" v-if="result.show">
       <a href="javascript:;" class="close" @click="hide">&times;</a>
       <result :result="result" theme="dark"></result>
     </div>

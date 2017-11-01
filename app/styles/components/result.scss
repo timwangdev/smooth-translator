@@ -1,7 +1,7 @@
-.result {
+.cst-result {
   padding: 3px 5px;
 
-  .phonetic {
+  .cst-result-phonetic {
     margin-top: 0;
     margin-bottom: 5px;
   }
@@ -18,33 +18,33 @@
     white-space: normal;
   }
 
-  .text {
+  .cst-result-text {
     margin-bottom: 5px;
     font-weight: 600;
   }
 }
 
-.result.dark {
-  &.success,
-  &.pending {
+.cst-result[data-cst-theme="dark"] {
+  &[data-cst-status="success"],
+  &[data-cst-status="pending"] {
     background: #336721;
     color: #EDF8ED;
   }
 
-  &.failure {
+  &[data-cst-status="failure"] {
     background: #FFF299;
     color: #888888;
   }
 }
 
-.result.light {
-  &.success,
-  &.pending {
+.cst-result[data-cst-theme="light"] {
+  &[data-cst-status="success"],
+  &[data-cst-status="pending"] {
     background: #DDEADD;
     color: #2B3F29;
   }
 
-  &.failure {
+  &[data-cst-status="failure"] {
     background: #fff3c8;
     color: #888888;
   }

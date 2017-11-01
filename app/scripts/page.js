@@ -1,4 +1,3 @@
-import 'chromereload/devonly'
 import $ from 'jquery';
 import Vue from 'vue';
 import { dispatchMessage } from './helpers/message';

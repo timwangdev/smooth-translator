@@ -1,5 +1,3 @@
-import 'chromereload/devonly'
-
 // import translators from './translators'
 // import app from './config/application'
 import merge from 'deepmerge'
