@@ -1,15 +1,15 @@
-import _ from 'lodash';
+import { trim } from 'lodash';
 
 export function getSelection(evt) {
-  const selection = window.getSelection();
+  const selection = window.getSelection()
 
-  return _.trim(selection.toString());
+  return trim(selection.toString())
 }
 
 export function clearSelection() {
-  const selection = window.getSelection();
+  const selection = window.getSelection()
 
   if (selection) {
-    selection.empty();
+    selection.empty()
   }
 }

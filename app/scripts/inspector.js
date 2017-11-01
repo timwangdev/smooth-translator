@@ -1,18 +1,12 @@
-// TODO: Remove jquery from inspector
-
-import $ from 'jquery';
-import { dispatchMessage } from './helpers/message';
-import { getSelection, clearSelection } from './helpers/selection';
+import { dispatchMessage } from './helpers/message'
+import { getSelection } from './helpers/selection'
 
 function selectionHandler(evt) {
-  const text = getSelection();
+  const text = getSelection()
 
   if (text) {
-    chrome.runtime.sendMessage({
-      type: 'selection',
-      text: text
-    });
+    chrome.runtime.sendMessage({ type: 'selection', text: text })
   }
 }
 
-$(document).on('mouseup', selectionHandler);
+document.addEventListener('mouseup', selectionHandler)
