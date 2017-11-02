@@ -10,7 +10,8 @@ body {
 }
 
 .board {
-  width: 75%;
+  width: 65%;
+  min-width: 800px;
   margin: 60px auto;
   background: #fff;
 
@@ -44,6 +45,7 @@ input[type=range] {
 
 .command {
   padding: 2px 4px;
+  margin: 0 5px;
   font-size: 1.2em;
   color: #c7254e;
   background-color: #f9f2f4;
