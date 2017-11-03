@@ -53,9 +53,9 @@ dispatchMessage({
 
   linkInspect (message, sender, sendResponse) {
     if (message.enabled) {
-      chrome.browserAction.setIcon({ path: 'images/icon-48-link.png' })
+      chrome.browserAction.setIcon({ path: 'images/icon-128-link.png' })
     } else {
-      chrome.browserAction.setIcon({ path: 'images/icon-48.png' })
+      chrome.browserAction.setIcon({ path: 'images/icon-128.png' })
     }
   }
 })
