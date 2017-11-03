@@ -1,13 +1,14 @@
-import $ from 'jquery';
-import Vue from 'vue';
-import { dispatchMessage } from './helpers/message';
-import ResultList from './components/ResultList.vue';
+import $ from 'jquery'
+import Vue from 'vue'
+import { dispatchMessage } from './helpers/message'
+import { toggleLinkInspectMode } from './helpers/utils'
+import ResultList from './components/ResultList.vue'
 
 let app = null;
 
-function getApp() {
+function getApp () {
   if ($('#cst-list').length == 0) {
-    $('<div id="cst-list"></div>').appendTo('body');
+    $('<div id="cst-list"></div>').appendTo('body')
     app = new Vue({
       el: '#cst-list',
       render: h => h(ResultList),
@@ -17,11 +18,12 @@ function getApp() {
   return app.$children[0]
 }
 
-function translateHandler(message, sender, sendResponse) {
-  getApp().translate(message.text);
+function translate (message, sender, sendResponse) {
+  getApp().translate(message.text)
 }
 
-dispatchMessage({
-  translate: translateHandler,
-});
+function toggleLink (message, sender, sendResponse) {
+  toggleLinkInspectMode()
+}
 
+dispatchMessage({ translate, toggleLink })
