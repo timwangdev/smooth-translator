@@ -31,7 +31,7 @@ dispatchMessage({
   selection (message, sender, sendResponse) {
     localStorage.setItem('current', message.text)
 
-    if (/^[a-z]+(\'|\'s)?$/.test(message.text)) {
+    if (/^[a-z]+(\'|\'s)?$/i.test(message.text)) {
       getActiveTab(tab => {
         storage.get('siteRules')
           .then(options => findRule(options.siteRules, tab.hostname, '*'))
