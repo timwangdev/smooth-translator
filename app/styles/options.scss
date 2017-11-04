@@ -1,0 +1,53 @@
+@import 'components/form-group';
+@import 'components/rule-list';
+
+body {
+  background: #efefe9;
+  margin: 0;
+  padding: 0;
+  color: #555;
+  font-size: 13px;
+}
+
+.board {
+  width: 65%;
+  min-width: 800px;
+  margin: 60px auto;
+  background: #fff;
+
+  .board-header {
+    background: #fafafa url('../../images/bg.png');
+    background-size: 30%;
+    border-bottom: 1px solid #eeeeee;
+    padding: 10px 30px;
+
+    .title {
+      margin-top: 10px;
+      margin-bottom: 10px;
+      font-size: 30px;
+      line-height: 48px;
+      display: inline-block;
+    }
+
+    img {
+      vertical-align: middle;
+    }
+  }
+}
+
+.board-content {
+  padding: 30px;
+}
+
+input[type=range] {
+  vertical-align: middle;
+}
+
+.command {
+  padding: 2px 4px;
+  margin: 0 5px;
+  font-size: 1.2em;
+  color: #c7254e;
+  background-color: #f9f2f4;
+  border-radius: 4px;
+}
