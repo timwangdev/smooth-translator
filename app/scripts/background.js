@@ -66,3 +66,4 @@ chrome.commands.onCommand.addListener(command => {
     getActiveTab(tab => chrome.tabs.sendMessage(tab.id, { type: 'toggleLink' }))
   }
 })
+
