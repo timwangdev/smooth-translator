@@ -1,7 +1,7 @@
 import gulp from 'gulp'
 import { colors, log } from 'gulp-util'
 import zip from 'gulp-zip'
-import packageDetails from '../app/manifest.json'
+import packageDetails from '../package.json'
 import args from './lib/args'
 
 function getPackFileType () {
@@ -16,7 +16,7 @@ function getPackFileType () {
 }
 
 gulp.task('pack', ['build'], () => {
-  let name = 'Smooth Translator'
+  let name = packageDetails.name
   let version = packageDetails.version
   let filetype = getPackFileType()
   let filename = `${name}-${version}-${args.vendor}${filetype}`
