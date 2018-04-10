@@ -59,6 +59,7 @@
   },
   "dependencies": {
     "lodash": "^4.17.4",
+    "lscache": "^1.1.0",
     "vue": "^2.5.2",
     "vue-awesome": "^2.3.3"
   }

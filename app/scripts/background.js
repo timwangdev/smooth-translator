@@ -3,8 +3,33 @@ import storage from 'chrome-storage-wrapper'
 import { dispatchMessage } from './helpers/message'
 import { getActiveTab } from './helpers/tabs'
 import { findRule } from './helpers/rules'
-import translate from './helpers/translate'
 import defaults from './config/defaults'
+import lscache from 'lscache'
+import YoudaoWebTranslator from './translators/youdao-web-translator.js'
+// import YoudaoApiTranslator from './translators/youdao-api-translator.js'
+
+function translate (text, callback) {
+  const cacheKey = `text:v1:${text}`
+  let result = lscache.get(cacheKey)
+  if (result) {
+    callback(result)
+  } else {
+    const translator = new YoudaoWebTranslator()
+    try {
+      translator.translate(text, result => {
+        if (result.status === 'success' && result.translation === text) {
+          callback(translator.failure)
+        } else {
+          lscache.set(cacheKey, result)
+          callback(result)
+        }
+      })
+    } catch (e) {
+      console.log(e)
+      callback(translator.failure)
+    }
+  }
+}
 
 // Register options defaults on extension install/reinstall
 chrome.runtime.onInstalled.addListener(() => {
