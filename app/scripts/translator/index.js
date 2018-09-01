@@ -1,7 +1,7 @@
 import $ from 'jquery'
 import _ from 'lodash'
 
-const url = 'https://master-service-greatghoul.c9users.io/api/translate'
+const url = 'https://ms.ghoulmind.com/api/translate'
 
 class Translator {
   get failure () {
