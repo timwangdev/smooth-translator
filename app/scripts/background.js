@@ -5,8 +5,7 @@ import { getActiveTab } from './helpers/tabs'
 import { findRule } from './helpers/rules'
 import defaults from './config/defaults'
 import lscache from 'lscache'
-import YoudaoWebTranslator from './translators/youdao-web-translator.js'
-// import YoudaoApiTranslator from './translators/youdao-api-translator.js'
+import translator from './translator'
 
 function translate (text, callback) {
   const cacheKey = `text:v1:${text}`
@@ -14,7 +13,6 @@ function translate (text, callback) {
   if (result) {
     callback(result)
   } else {
-    const translator = new YoudaoWebTranslator()
     try {
       translator.translate(text, result => {
         if (result.status === 'success' && result.translation === text) {
@@ -42,10 +40,10 @@ dispatchMessage({
   translate (message, sender, sendResponse) {
     storage.get('notifyTimeout').then(options => {
       translate(message.text, (result) => {
-        if (message.from == 'page') {
+        if (message.from === 'page') {
           result.timeout = options.notifyTimeout
         } else {
-          localStorage.setItem('current', message.text)
+          window.localStorage.setItem('current', message.text)
         }
 
         sendResponse(result)
@@ -54,9 +52,9 @@ dispatchMessage({
   },
 
   selection (message, sender, sendResponse) {
-    localStorage.setItem('current', message.text)
+    window.localStorage.setItem('current', message.text)
 
-    if (/^[a-z]+(\'|\'s)?$/i.test(message.text)) {
+    if (/^[a-z]+('|'s)?$/i.test(message.text)) {
       getActiveTab(tab => {
         storage.get('siteRules')
           .then(options => findRule(options.siteRules, tab.hostname, '*'))
@@ -73,7 +71,7 @@ dispatchMessage({
   },
 
   current (message, sender, sendResponse) {
-    sendResponse(localStorage.getItem('current'))
+    sendResponse(window.localStorage.getItem('current'))
   },
 
   linkInspect (message, sender, sendResponse) {
@@ -91,4 +89,3 @@ chrome.commands.onCommand.addListener(command => {
     getActiveTab(tab => chrome.tabs.sendMessage(tab.id, { type: 'toggleLink' }))
   }
 })
-
