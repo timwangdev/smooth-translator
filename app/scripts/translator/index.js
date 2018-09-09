@@ -1,5 +1,6 @@
 import $ from 'jquery'
 import _ from 'lodash'
+import { Dict } from './dict'
 
 const url = 'https://ms.ghoulmind.com/api/translate'
 
@@ -51,4 +52,9 @@ class Translator {
   }
 }
 
-export default new Translator()
+console.log(Dict)
+
+export default {
+  translator: new Translator(),
+  Dict: Dict
+}

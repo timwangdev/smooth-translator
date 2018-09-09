@@ -5,7 +5,7 @@ import { getActiveTab } from './helpers/tabs'
 import { findRule } from './helpers/rules'
 import defaults from './config/defaults'
 import lscache from 'lscache'
-import translator from './translator'
+import Dict from './translator/dict'
 
 function translate (text, callback) {
   const cacheKey = `text:v1:${text}`
@@ -13,19 +13,9 @@ function translate (text, callback) {
   if (result) {
     callback(result)
   } else {
-    try {
-      translator.translate(text, result => {
-        if (result.status === 'success' && result.translation === text) {
-          callback(translator.failure)
-        } else {
-          lscache.set(cacheKey, result)
-          callback(result)
-        }
-      })
-    } catch (e) {
-      console.log(e)
-      callback(translator.failure)
-    }
+    Dict.translate(text).then(result => {
+      callback({ status: 'success', translation: result })
+    })
   }
 }
 
