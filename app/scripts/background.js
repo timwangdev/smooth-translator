@@ -5,18 +5,14 @@ import { getActiveTab } from './helpers/tabs'
 import { findRule } from './helpers/rules'
 import defaults from './config/defaults'
 import lscache from 'lscache'
-import Dict from './translator/dict'
+import translator from './translator'
+import { trim } from 'lodash'
 
-function translate (text, callback) {
-  const cacheKey = `text:v1:${text}`
+function translateText (text) {
+  const sourceText = trim(text)
+  const cacheKey = `text:v1:${sourceText}`
   let result = lscache.get(cacheKey)
-  if (result) {
-    callback(result)
-  } else {
-    Dict.translate(text).then(result => {
-      callback({ status: 'success', translation: result })
-    })
-  }
+  return result ? Promise.resolve(result) : translator.translate(sourceText)
 }
 
 // Register options defaults on extension install/reinstall
@@ -29,7 +25,7 @@ chrome.runtime.onInstalled.addListener(() => {
 dispatchMessage({
   translate (message, sender, sendResponse) {
     storage.get('notifyTimeout').then(options => {
-      translate(message.text, (result) => {
+      translateText(message.text).then(result => {
         if (message.from === 'page') {
           result.timeout = options.notifyTimeout
         } else {

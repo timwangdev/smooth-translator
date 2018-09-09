@@ -1,8 +1,8 @@
 import wait from '../helpers/wait'
 
-const URL = 'http://dict.youdao.com'
+const URL = 'http://fanyi.youdao.com/?keyfrom=dict2.index'
 
-export default class Dict {
+export default class Fanyi {
   destroy () {
     window.removeEventListener('mousedown', this.onMessage, false)
     this.iframe.remove()
@@ -10,13 +10,17 @@ export default class Dict {
 
   register () {
     window.addEventListener('message', this.onMessage, false)
-    this.iwindow.postMessage({ type: 'fetch-result', url: this.url }, '*')
+    this.iwindow.postMessage({
+      type: 'fetch-result',
+      token: this.token,
+      text: this.text
+    }, '*')
   }
 
   receive (event) {
     const { data } = event
-    console.log('[dict] event received message:', JSON.stringify(data))
-    if (data.type === 'result' && data.url === this.url) {
+    if (data.type === 'result' && data.token === this.token) {
+      console.log('[fanyi] event received message:', JSON.stringify(data))
       this.result = data.result
     }
   }
@@ -30,7 +34,8 @@ export default class Dict {
   }
 
   translate (text) {
-    this.url = `${URL}/w/${encodeURIComponent(text)}/#keyfrom=dict2.top`
+    this.text = text
+    this.token = 'fanyi-' + Date.now()
     this.iframe = document.createElement('iframe')
     document.body.appendChild(this.iframe)
     this.iframe.onload = () => {
@@ -38,15 +43,15 @@ export default class Dict {
     }
     this.onMessage = this.receive.bind(this)
     this.result = null
-    this.iframe.src = this.url
+    this.iframe.src = URL
     return wait(() => this.fetchResult())
   }
 }
 
-Dict.translate = function (text) {
-  let dict = new Dict()
-  return dict.translate(text).finally(() => {
-    dict.destroy()
-    dict = null
+Fanyi.translate = function (text) {
+  let fanyi = new Fanyi()
+  return fanyi.translate(text).finally(() => {
+    fanyi.destroy()
+    fanyi = null
   })
 }
