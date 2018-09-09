@@ -13,7 +13,9 @@
           @keydown.enter="translate"></textarea>
       </section>
 
-      <result :result="result" theme="light" v-if="result"></result>
+      <div class="result-wrapper">
+        <result :result="result" theme="light" v-if="result"></result>
+      </div>
 
       <footer>
         <a href="#" title="偏好设定" class="btn-settings" @click="settings">
