@@ -11,7 +11,7 @@ const PAT_WORD = /^[a-z]+('|'s)?$/i
 
 function translateText (text) {
   const sourceText = trim(text)
-  const cacheKey = `text:v1:${sourceText}`
+  const cacheKey = `text:v2:${sourceText}`
   let result = lscache.get(cacheKey)
   return result ? Promise.resolve(result) : translator.translate(sourceText)
 }

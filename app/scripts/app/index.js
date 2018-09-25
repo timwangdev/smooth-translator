@@ -38,6 +38,9 @@ function prepareOptions() {
     .then(options => migrateOptions(options))
     .then(options => _.defaults(options, defaults))
     .then(options => setOptions(options))
+  chrome.storage.onChanged.addListener(() => {
+    options = getOptions()
+  })
 }
 
 export default {
