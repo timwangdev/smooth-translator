@@ -1,7 +1,6 @@
 import _ from 'lodash';
 import storage from 'chrome-storage-wrapper';
 import defaults from '../config/defaults';
-import { findRule } from '../helpers/rules';
 
 export default {
   data() {
@@ -12,6 +11,7 @@ export default {
   methods: {
     initOptions() {
       storage.addChangeListener(() => this.loadOptions());
+      storage.getAll().then(options => console.log(options));
       return this.loadOptions();
     },
     loadOptions() {
@@ -21,17 +21,8 @@ export default {
       this.options[name] = value;
       storage.set(name, value);
     },
-    findRule(site) {
-      return findRule(this.options.siteRules, site);
-    },
-    saveRule(newRule) {
-      const rule = this.findRule(newRule.site);
-      if (rule == null) {
-        this.options.siteRules.push(newRule);
-      } else {
-        rule.enabled = newRule.enabled;
-      }
-
+    saveRule(rule) {
+      this.options.siteRules[rule.site] = rule.enabled
       this.updateOption('siteRules', this.options.siteRules);
     },
     removeRule(rule) {

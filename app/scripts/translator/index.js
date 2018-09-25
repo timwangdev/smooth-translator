@@ -1,54 +1,41 @@
-import $ from 'jquery'
 import _ from 'lodash'
+import lscache from 'lscache'
+import Dict from './dict'
+import Fanyi from './fanyi'
+import { words } from 'lodash'
 
-const url = 'https://ms.ghoulmind.com/api/translate'
+const PAT_WORD = /^([a-z]+-?)+$/i
+const RESULT_FAILURE = {
+  translation: '未找到释义',
+  status: 'failure'
+}
 
-class Translator {
-  get failure () {
-    return {
-      translation: '未找到释义',
-      status: 'failure'
-    }
-  }
+function isWord (text) {
+  return text.match(PAT_WORD)
+}
 
-  parseResult (data) {
-    const result = this.failure
+function smartText (text) {
+  return isWord(text) ? words(text).join(' ') : text
+}
 
-    const translations = _.get(data, 'basic.explains') || _.get(data, 'translation')
-    if (translations.length) {
-      result.translation = translations.join('<br/>')
+function cacheResult(text, result) {
+  const key = `text:v2:${_.trim(text)}`
+  lscache.set(key, result, 60 * 24 * 7)
+  return result
+}
 
-      const phonetic = _.get(data, 'basic.phonetic')
-      if (phonetic) {
-        result.phonetic = `[${phonetic}]`
-      }
+function translate (text) {
+  const sourceText = smartText(text)
 
-      result.status = 'success'
-    }
-
-    return result
-  }
-
-  requestText (text, callback) {
-    $.post(url, {
-      from: 'auto',
-      to: 'auto',
-      text
-    }).then(data => {
-      callback(this.parseResult(data))
-    }, (jqXHR, textStatus, errorThrown) => {
-      console.log(errorThrown)
-      callback(this.failure)
-    })
-  }
-
-  translate (text, callback) {
-    if (/^\s*$/.test(text)) {
-      callback(this.failure)
-    } else {
-      this.requestText(text, callback)
-    }
+  if (!sourceText) {
+    Promise.resolve(RESULT_FAILURE)
+  } else if (isWord(sourceText)) {
+    return Dict.translate(sourceText)
+               .then(result => cacheResult(text, result))
+               .catch(() => RESULT_FAILURE)
+  } else {
+    return Fanyi.translate(sourceText).catch(() => RESULT_FAILURE)
   }
 }
 
-export default new Translator()
+export default { translate }

@@ -1,45 +1,29 @@
-import merge from 'deepmerge'
 import storage from 'chrome-storage-wrapper'
 import { dispatchMessage } from './helpers/message'
 import { getActiveTab } from './helpers/tabs'
-import { findRule } from './helpers/rules'
 import defaults from './config/defaults'
 import lscache from 'lscache'
 import translator from './translator'
+import { trim } from 'lodash'
+import app from './app'
 
-function translate (text, callback) {
-  const cacheKey = `text:v1:${text}`
+const PAT_WORD = /^[a-z]+('|'s)?$/i
+
+function translateText (text) {
+  const sourceText = trim(text)
+  const cacheKey = `text:v2:${sourceText}`
   let result = lscache.get(cacheKey)
-  if (result) {
-    callback(result)
-  } else {
-    try {
-      translator.translate(text, result => {
-        if (result.status === 'success' && result.translation === text) {
-          callback(translator.failure)
-        } else {
-          lscache.set(cacheKey, result)
-          callback(result)
-        }
-      })
-    } catch (e) {
-      console.log(e)
-      callback(translator.failure)
-    }
-  }
+  return result ? Promise.resolve(result) : translator.translate(sourceText)
 }
 
-// Register options defaults on extension install/reinstall
-chrome.runtime.onInstalled.addListener(() => {
-  storage.getAll()
-    .then(options => merge(defaults, options))
-    .then(options => storage.set(options))
-})
+function isWord(text) {
+  return PAT_WORD.test(text)
+}
 
 dispatchMessage({
   translate (message, sender, sendResponse) {
     storage.get('notifyTimeout').then(options => {
-      translate(message.text, (result) => {
+      translateText(message.text).then(result => {
         if (message.from === 'page') {
           result.timeout = options.notifyTimeout
         } else {
@@ -54,18 +38,14 @@ dispatchMessage({
   selection (message, sender, sendResponse) {
     window.localStorage.setItem('current', message.text)
 
-    if (/^[a-z]+('|'s)?$/i.test(message.text)) {
+    if (isWord(message.text)) {
       getActiveTab(tab => {
-        storage.get('siteRules')
-          .then(options => findRule(options.siteRules, tab.hostname, '*'))
-          .then(rule => {
-            if (rule.enabled) {
-              chrome.tabs.sendMessage(sender.tab.id, {
-                type: 'translate',
-                text: message.text
-              })
-            }
+        if (app.isSiteEnabled(tab.hostname)) {
+          chrome.tabs.sendMessage(sender.tab.id, {
+            type: 'translate',
+            text: message.text
           })
+        }
       })
     }
   },
@@ -89,3 +69,5 @@ chrome.commands.onCommand.addListener(command => {
     getActiveTab(tab => chrome.tabs.sendMessage(tab.id, { type: 'toggleLink' }))
   }
 })
+
+app.prepareOptions()

@@ -16,7 +16,7 @@
 
         <form-group label="启用/禁用页面划词翻译">
           <rule-list
-            :rules="options.siteRules"
+            :rules="siteRules"
             @update="saveRule"
             @remove="removeRule" />
         </form-group>
@@ -50,6 +50,13 @@ export default {
   created() {
     this.initOptions()
     this.getLinkInspectShortcut()
+  },
+  computed: {
+    siteRules() {
+      return _.map(this.options.siteRules, (enabled, site) => {
+        return { site, enabled }
+      })
+    }
   },
   methods: {
     getLinkInspectShortcut() {

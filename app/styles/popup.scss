@@ -1,5 +1,6 @@
 $font-color: #555;
 
+@import 'mixins/reset';
 @import 'components/loader';
 @import 'components/result';
 
@@ -37,6 +38,15 @@ body {
         outline: none;
         background-color: #ffffd4;
       }
+    }
+  }
+
+  .result-wrapper {
+    @include reset;
+    padding: 0px 5px !important;
+
+    .cst-result {
+      padding: 0 5px;
     }
   }
 

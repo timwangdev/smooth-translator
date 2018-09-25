@@ -36,6 +36,16 @@
       "matches": ["<all_urls>"],
       "js": ["scripts/inspector.js"],
       "all_frames": true
+    },
+    {
+      "matches": [ "*://fanyi.youdao.com/*" ],
+      "js": [ "scripts/page-fanyi.js" ],
+      "all_frames": true
+    },
+    {
+      "matches": [ "*://dict.youdao.com/*" ],
+      "js": [ "scripts/page-dict.js" ],
+      "all_frames": true
     }
   ],
 
@@ -53,7 +63,10 @@
     "tabs",
     "storage",
     "notifications",
-    "http://fanyi.youdao.com/openapi.do"
+    "webRequest",
+    "webRequestBlocking",
+    "*://fanyi.youdao.com/*",
+    "*://dict.youdao.com/*"
   ],
 
   "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"

@@ -22,6 +22,24 @@
     margin-bottom: 5px;
     font-weight: 600;
   }
+
+  .cst-result-phonetic {
+    padding-top: 5px !important;
+    padding-bottom: 10px !important;
+    color: #58afb1;
+  }
+
+  .cst-result-translation {
+    overflow-y: auto;
+    max-height: 200px;
+
+    .additional {
+      color: #aaa !important;
+      font-size: 0.9em !important;
+      margin-top: 5px !important;
+      padding-bottom: 5px !important;
+    }
+  }
 }
 
 .cst-result[data-cst-theme="dark"] {

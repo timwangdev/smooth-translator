@@ -13,7 +13,9 @@
           @keydown.enter="translate"></textarea>
       </section>
 
-      <result :result="result" theme="light" v-if="result"></result>
+      <div class="result-wrapper">
+        <result :result="result" theme="light" v-if="result"></result>
+      </div>
 
       <footer>
         <a href="#" title="偏好设定" class="btn-settings" @click="settings">
@@ -66,12 +68,13 @@ export default {
   },
   methods: {
     initRule(site) {
-      this.rule = this.findRule(site)
-
-      if (this.rule == null) {
-        const enabled = this.findRule('*').enabled
-        this.rule = { site, enabled }
+      const rule = { site }
+      if (site in this.options.siteRules) {
+        rule.enabled = this.options.siteRules[site]
+      } else {
+        rule.enabled = this.options.siteRules['*']
       }
+      this.rule = rule;
     },
     focus() {
       this.$nextTick(() => this.$refs.source.select())
