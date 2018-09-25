@@ -3,7 +3,7 @@ import wait from './helpers/wait'
 
 function fetchResult () {
   const elemTrans = document.querySelector('.trans-container')
-  if (elemTrans) {
+  if (elemTrans && !elemTrans.getAttribute('id')) {
     const result = {
       status: 'success',
       translation: trim(elemTrans.innerHTML)

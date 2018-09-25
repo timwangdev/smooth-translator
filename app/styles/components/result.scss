@@ -30,6 +30,9 @@
   }
 
   .cst-result-translation {
+    overflow-y: auto;
+    max-height: 200px;
+
     .additional {
       color: #aaa !important;
       font-size: 0.9em !important;
