@@ -22,17 +22,8 @@ export default {
       this.options[name] = value;
       storage.set(name, value);
     },
-    findRule(site) {
-      return findRule(this.options.siteRules, site);
-    },
-    saveRule(newRule) {
-      const rule = this.findRule(newRule.site);
-      if (rule == null) {
-        this.options.siteRules.push(newRule);
-      } else {
-        rule.enabled = newRule.enabled;
-      }
-
+    saveRule(rule) {
+      this.options.siteRules[rule.site] = rule.enabled
       this.updateOption('siteRules', this.options.siteRules);
     },
     removeRule(rule) {
