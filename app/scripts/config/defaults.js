@@ -3,7 +3,7 @@ export default {
   notifyTimeout: 5,
 
   // 划词翻译在各个网站上是否开启
-  siteRules: [
-    { site: '*', enabled: true },
-  ],
+  siteRules: {
+    '*': true
+  },
 }

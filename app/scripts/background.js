@@ -7,6 +7,7 @@ import defaults from './config/defaults'
 import lscache from 'lscache'
 import translator from './translator'
 import { trim } from 'lodash'
+import migrateOptions from './helpers/migrate-options'
 
 function translateText (text) {
   const sourceText = trim(text)
@@ -15,12 +16,12 @@ function translateText (text) {
   return result ? Promise.resolve(result) : translator.translate(sourceText)
 }
 
-// Register options defaults on extension install/reinstall
-chrome.runtime.onInstalled.addListener(() => {
+function prepareOptions() {
   storage.getAll()
+    .then(options => migrateOptions(options))
     .then(options => merge(defaults, options))
     .then(options => storage.set(options))
-})
+}
 
 dispatchMessage({
   translate (message, sender, sendResponse) {
@@ -75,3 +76,5 @@ chrome.commands.onCommand.addListener(command => {
     getActiveTab(tab => chrome.tabs.sendMessage(tab.id, { type: 'toggleLink' }))
   }
 })
+
+prepareOptions();

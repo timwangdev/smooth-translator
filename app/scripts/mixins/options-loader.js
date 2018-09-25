@@ -12,6 +12,7 @@ export default {
   methods: {
     initOptions() {
       storage.addChangeListener(() => this.loadOptions());
+      storage.getAll().then(options => console.log(options));
       return this.loadOptions();
     },
     loadOptions() {
