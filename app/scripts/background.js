@@ -1,13 +1,13 @@
-import merge from 'deepmerge'
 import storage from 'chrome-storage-wrapper'
 import { dispatchMessage } from './helpers/message'
 import { getActiveTab } from './helpers/tabs'
-import { findRule } from './helpers/rules'
 import defaults from './config/defaults'
 import lscache from 'lscache'
 import translator from './translator'
 import { trim } from 'lodash'
-import migrateOptions from './helpers/migrate-options'
+import app from './app'
+
+const PAT_WORD = /^[a-z]+('|'s)?$/i
 
 function translateText (text) {
   const sourceText = trim(text)
@@ -16,11 +16,8 @@ function translateText (text) {
   return result ? Promise.resolve(result) : translator.translate(sourceText)
 }
 
-function prepareOptions() {
-  storage.getAll()
-    .then(options => migrateOptions(options))
-    .then(options => merge(defaults, options))
-    .then(options => storage.set(options))
+function isWord(text) {
+  return PAT_WORD.test(text)
 }
 
 dispatchMessage({
@@ -41,18 +38,14 @@ dispatchMessage({
   selection (message, sender, sendResponse) {
     window.localStorage.setItem('current', message.text)
 
-    if (/^[a-z]+('|'s)?$/i.test(message.text)) {
+    if (isWord(message.text)) {
       getActiveTab(tab => {
-        storage.get('siteRules')
-          .then(options => findRule(options.siteRules, tab.hostname, '*'))
-          .then(rule => {
-            if (rule.enabled) {
-              chrome.tabs.sendMessage(sender.tab.id, {
-                type: 'translate',
-                text: message.text
-              })
-            }
+        if (app.isSiteEnabled(tab.hostname)) {
+          chrome.tabs.sendMessage(sender.tab.id, {
+            type: 'translate',
+            text: message.text
           })
+        }
       })
     }
   },
@@ -77,4 +70,4 @@ chrome.commands.onCommand.addListener(command => {
   }
 })
 
-prepareOptions();
+app.prepareOptions()
