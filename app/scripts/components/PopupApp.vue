@@ -68,12 +68,13 @@ export default {
   },
   methods: {
     initRule(site) {
-      this.rule = this.findRule(site)
-
-      if (this.rule == null) {
-        const enabled = this.findRule('*').enabled
-        this.rule = { site, enabled }
+      const rule = { site }
+      if (site in this.options.siteRules) {
+        rule.enabled = this.options.siteRules[site]
+      } else {
+        rule.enabled = this.options.siteRules['*']
       }
+      this.rule = rule;
     },
     focus() {
       this.$nextTick(() => this.$refs.source.select())
