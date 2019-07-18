@@ -8,7 +8,8 @@ import { trim } from 'lodash'
 import app from './app'
 
 const PAT_WORD = /^[a-z]+('|'s)?$/i
-const JA_WORD = /[\u3000-\u303F]|[\u3040-\u309F]|[\u30A0-\u30FF]|[\uFF00-\uFFEF]|[\u4E00-\u9FAF]|[\u2605-\u2606]|[\u2190-\u2195]|\u203B/g
+const JA_KANA = /[\u3000-\u303F]|[\u3040-\u309F]|[\u30A0-\u30FF]|[\u31F0-\u31FF]/
+const JA_WORD = /^([\u3000-\u303F]|[\u3040-\u309F]|[\u30A0-\u30FF]|[\u31F0-\u31FF]|[\uFF00-\uFFEF]|[\u4E00-\u9FAF]|[\u2605-\u2606]|[\u2190-\u2195]|\u203B)+$/g
 
 function translateText (text) {
   const sourceText = trim(text)
@@ -18,7 +19,7 @@ function translateText (text) {
 }
 
 function isWord (text) {
-  return PAT_WORD.test(text) || JA_WORD.test(text)
+  return PAT_WORD.test(text) || JA_WORD.test(text) && JA_KANA.test(text)
 }
 
 dispatchMessage({
